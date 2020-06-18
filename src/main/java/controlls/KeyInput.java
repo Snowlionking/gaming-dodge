@@ -21,7 +21,7 @@ public class KeyInput extends KeyAdapter {
 	public KeyInput(Handler handler) {
 		this.handler = handler;
 	}
-	
+
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
 
@@ -29,7 +29,7 @@ public class KeyInput extends KeyAdapter {
 			System.exit(1);
 		}
 
-		if (Game.state == GameState.PLAYING) {
+		if (Game.gameModel.getState() == GameState.PLAYING) {
 
 			switch (key) {
 			case KeyEvent.VK_W:
@@ -51,10 +51,10 @@ public class KeyInput extends KeyAdapter {
 			default:
 				break;
 			}
-		} else if(Game.state == GameState.MENU) {
+		} else if (Game.gameModel.getState() == GameState.MENU) {
 			switch (key) {
 			case KeyEvent.VK_P:
-				Game.state = GameState.PLAYING;
+				Game.gameModel.setState(GameState.PLAYING);
 				break;
 			default:
 				break;
@@ -65,7 +65,7 @@ public class KeyInput extends KeyAdapter {
 	public void keyReleased(KeyEvent e) {
 		int key = e.getKeyCode();
 
-		if (Game.state == GameState.PLAYING) {
+		if (Game.gameModel.getState() == GameState.PLAYING) {
 			switch (key) {
 			case KeyEvent.VK_W:
 				pressedKeys[KEY_W] = false;
@@ -102,6 +102,11 @@ public class KeyInput extends KeyAdapter {
 			default:
 				break;
 			}
+		} else if (Game.gameModel.getState() == GameState.GAMEOVER) {
+			pressedKeys[KEY_W] = false;
+			pressedKeys[KEY_A] = false;
+			pressedKeys[KEY_S] = false;
+			pressedKeys[KEY_D] = false;
 		}
 	}
 }

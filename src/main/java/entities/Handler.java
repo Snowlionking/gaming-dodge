@@ -16,32 +16,32 @@ public class Handler {
 	private TrackEnemy trackEnemy;
 	
 	public void tick() {
-		getPlayer().tick();
-		getTrackEnemy().tick();
-		for (int i = 0; i < getEnemyList().size(); i++) {
-			Enemy enemy = getEnemyList().get(i);
+		player.tick();
+		trackEnemy.tick();
+		for (int i = 0; i < enemyList.size(); i++) {
+			Enemy enemy = enemyList.get(i);
 			enemy.tick();
 		}
 	}
 
 	public void render(Graphics g) {
-		for(Enemy enemy: getEnemyList()) {
+		for(Enemy enemy: enemyList) {
 			enemy.render(g);
 		}
-		for(PowerUp powerUp: getPowerUpList()) {
+		for(PowerUp powerUp: powerUpList) {
 			powerUp.render(g);
 		}
-		getPlayer().render(g);
-		getPoint().render(g);
-		getTrackEnemy().render(g);
+		player.render(g);
+		point.render(g);
+		trackEnemy.render(g);
 	}
 	
 	public void addEnemy(Enemy enemy) {
-		this.getEnemyList().add(enemy);
+		this.enemyList.add(enemy);
 	}
 
 	public void removeEnemy(Enemy enemy) {
-		this.getEnemyList().remove(enemy);
+		this.enemyList.remove(enemy);
 	}
 
 	public Player getPlayer() {
@@ -69,7 +69,7 @@ public class Handler {
 	}
 
 	public void addPowerUp(PowerUp powerUp) {
-		this.getPowerUpList().add(powerUp);
+		this.powerUpList.add(powerUp);
 	}
 
 	public LinkedList<PowerUp> getPowerUpList() {

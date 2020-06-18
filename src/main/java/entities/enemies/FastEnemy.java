@@ -3,35 +3,23 @@ package entities.enemies;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.util.Random;
 
 import entities.Id;
-import game.Game;
+import services.InboundService;
+import services.Randomizer;
 
 public class FastEnemy extends Enemy {
 
-	private Random random = new Random();
+	private Randomizer randomizer = new Randomizer();
+	private InboundService inboundService = new InboundService();
 	private static final int SPEED = 6;
 
 	public FastEnemy(int x, int y, Id id) {
 		super(x, y, id);
 		damage = 20;
 
-		int direction = random.nextInt(4);
-
-		if (direction == 0) {
-			velX = SPEED;
-			velY = SPEED;
-		} else if (direction == 1) {
-			velX = -SPEED;
-			velY = -SPEED;
-		} else if (direction == 2) {
-			velX = -SPEED;
-			velY = SPEED;
-		} else if (direction == 3) {
-			velX = SPEED;
-			velY = -SPEED;
-		}
+		velX = randomizer.randomStartDirection(SPEED);
+		velY = randomizer.randomStartDirection(SPEED);
 	}
 
 	@Override
@@ -39,12 +27,8 @@ public class FastEnemy extends Enemy {
 		x += velX;
 		y += velY;
 
-		if (x <= 0 || x >= Game.WIDTH - 32) {
-			velX *= -1;
-		}
-		if (y <= 0 || y >= Game.HEIGHT - 48) {
-			velY *= -1;
-		}
+		velX *= inboundService.keepInboundOnXAxe(x);
+		velY *= inboundService.keepInboundOnYAxe(y);
 	}
 
 	@Override

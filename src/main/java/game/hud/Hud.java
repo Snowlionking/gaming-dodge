@@ -9,14 +9,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import game.Game;
+import game.GameModel;
 import services.HighscoreService;
 import services.InboundService;
 
 public class Hud {
 	public static int HEALTH = 100;
 	public static int SCORE = 0;
-
-	private boolean safeFileRead = false;
+	
+	public static boolean safeFileRead = false;
 	private List<Integer> highscores = new ArrayList<>();
 
 	private InboundService inboundService = new InboundService();
@@ -27,7 +28,7 @@ public class Hud {
 	}
 
 	public void render(Graphics g) {
-		switch (Game.state) {
+		switch (Game.gameModel.getState()) {
 		case PLAYING:
 			g.setColor(Color.gray);
 			g.fillRect(1, 1, 100, 24);
@@ -38,31 +39,34 @@ public class Hud {
 			g.setColor(Color.white);
 			g.drawString("Health: " + Integer.toString(HEALTH), 2, 48);
 			g.drawString("Score: " + Integer.toString(SCORE), 2, 64);
+			g.drawString("Level: " + Integer.toString(Game.gameModel.getLevel()), 2, 80);
 			break;
 		case MENU:
 			g.setColor(Color.white);
 			g.setFont(new Font("TimesRoman", Font.PLAIN, 24));
-			g.drawRect(Game.WIDTH / 2 - 115, Game.HEIGHT / 2 - 115, 256, 48);
-			g.drawString("PRESS \"P\" TO PLAY", Game.WIDTH / 2 - 100, Game.HEIGHT / 2 - 80);
-			g.drawRect(Game.WIDTH / 2 - 84, Game.HEIGHT / 2 + 44, 180, 48);
-			g.drawString("HIGHSCORES", Game.WIDTH / 2 - 75, Game.HEIGHT / 2 + 75);
-			g.drawRect(Game.WIDTH / 2 - 64, Game.HEIGHT - 256, 128, 48);
-			g.drawString("EXIT", Game.WIDTH / 2 - 24, Game.HEIGHT - 222);
+			g.drawRect(GameModel.WIDTH / 2 - 115, GameModel.HEIGHT / 2 - 115, 256, 48);
+			g.drawString("PRESS \"P\" TO PLAY", GameModel.WIDTH / 2 - 100, GameModel.HEIGHT / 2 - 80);
+			g.drawRect(GameModel.WIDTH / 2 - 84, GameModel.HEIGHT / 2 + 44, 180, 48);
+			g.drawString("HIGHSCORES", GameModel.WIDTH / 2 - 75, GameModel.HEIGHT / 2 + 75);
+			g.drawRect(GameModel.WIDTH / 2 - 64, GameModel.HEIGHT - 256, 128, 48);
+			g.drawString("EXIT", GameModel.WIDTH / 2 - 24, GameModel.HEIGHT - 222);
 			break;
 		case GAMEOVER:
 			g.setColor(Color.white);
 			g.setFont(new Font("TimesRoman", Font.PLAIN, 24));
-			g.drawString("YOU DIED!", Game.WIDTH / 2 - 115, Game.HEIGHT / 2);
-			g.drawString("SCORE: " + Integer.toString(SCORE), Game.WIDTH / 2 - 115, Game.HEIGHT / 2 + 128);
-			g.drawString("PRESS ANYWHERE TO GO BACK TO MENU", Game.WIDTH / 2 - 256, Game.HEIGHT / 2 + 256);
+			g.drawString("YOU DIED!", GameModel.WIDTH / 2 - 115, GameModel.HEIGHT / 2);
+			g.drawString("SCORE: " + Integer.toString(SCORE), GameModel.WIDTH / 2 - 115, GameModel.HEIGHT / 2 + 128);
+			g.drawString("PRESS ANYWHERE TO GO BACK TO MENU", GameModel.WIDTH / 2 - 256, GameModel.HEIGHT / 2 + 256);
 			break;
 		case HIGHSCORES:
 			g.setColor(Color.white);
 			g.setFont(new Font("TimesRoman", Font.PLAIN, 48));
+			g.drawString("BACK", 10, 50);
+			g.drawRect(1, 1, 154, 64);
 			g.drawString("HIGHSCORES", 488, 84);
 			if (!safeFileRead) {
 				highscores = highscoreService.loadHighscores();
-				safeFileRead = true;
+				safeFileRead= true;
 			}
 			g.setFont(new Font("TimesRoman", Font.PLAIN, 24));
 			highscores = highscores.stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList());

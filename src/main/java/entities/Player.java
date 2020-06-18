@@ -6,7 +6,7 @@ import java.awt.Rectangle;
 import java.util.Iterator;
 
 import entities.enemies.Enemy;
-import game.Game;
+import game.GameModel;
 import game.hud.Hud;
 import services.InboundService;
 import services.Spawner;
@@ -27,8 +27,8 @@ public class Player extends GameObject {
 		x += velX;
 		y += velY;
 
-		x = inboundService.clamp(x, 1, Game.WIDTH - 49);
-		y = inboundService.clamp(y, 1, Game.HEIGHT - 72);
+		x = inboundService.clamp(x, 1, GameModel.WIDTH - 49);
+		y = inboundService.clamp(y, 1, GameModel.HEIGHT - 72);
 
 		collisionCheck();
 	}

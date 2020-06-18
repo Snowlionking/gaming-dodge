@@ -17,7 +17,7 @@ public class HighscoreService {
 			bufferedWriter.write(score);
 			bufferedWriter.newLine();
 			bufferedWriter.close();
-			Game.highscoreSet = true;
+			Game.gameModel.setHighscoreSet(true);
 		} catch (Exception e) {
 			System.out.println("Error: " + e.getMessage());
 		}

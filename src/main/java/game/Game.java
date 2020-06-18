@@ -16,39 +16,68 @@ public class Game extends Canvas implements Runnable {
 
 	private static final long serialVersionUID = -4584388369897487885L;
 
-	public static final int WIDTH = 1280;
-	public static final int HEIGHT = WIDTH / 12 * 9;
-	public static boolean highscoreSet = false;
-
-	private boolean running = false;
-
-	public static GameState state;
+	public static GameModel gameModel = new GameModel();
 
 	private HighscoreService highscoreService = new HighscoreService();
+
 	private Thread thread;
 	private Handler handler = new Handler();
 	private Hud hud = new Hud();
 	private Spawner spawner = new Spawner();
 
 	public Game() {
-		state = GameState.MENU;
+		gameModel.setHighscoreSet(false);
+		gameModel.setLevel(1);
+		gameModel.setRunning(false);
+		gameModel.setState(GameState.MENU);
 
-		new Window(WIDTH, HEIGHT, "Schwarzhafen", this);
+		new Window(GameModel.WIDTH, GameModel.HEIGHT, "Dodge-City", this);
 	}
 
 	public synchronized void start() {
 		thread = new Thread(this);
 		thread.start();
-		running = true;
+		gameModel.setRunning(true);
 	}
 
 	public synchronized void stop() {
 		try {
 			thread.join();
-			running = false;
+			gameModel.setRunning(false);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void gameLoop() {
+
+		long lastTime = System.nanoTime();
+		double amountOfTicks = 60.0;
+		double ns = 1000000000 / amountOfTicks;
+		double delta = 0;
+		long timer = System.currentTimeMillis();
+
+		initializeSpawns();
+		while (gameModel.isRunning()) {
+			long now = System.nanoTime();
+			delta += (now - lastTime) / ns;
+			lastTime = now;
+
+			while (delta >= 1) {
+				tick();
+				render();
+				delta--;
+			}
+
+
+			if (System.currentTimeMillis() - timer > 1000) {
+				timer += 1000;
+			}
+//			glfwPollEvents();
+//			FloatBuffer axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1);
+//			System.out.println(axes.get());
+		}
+		stop();
 	}
 
 	private void render() {
@@ -58,14 +87,12 @@ public class Game extends Canvas implements Runnable {
 			return;
 		}
 
-		initializeSpawns();
-
 		Graphics g = bs.getDrawGraphics();
 
 		g.setColor(Color.black);
-		g.fillRect(0, 0, WIDTH, HEIGHT);
+		g.fillRect(0, 0, GameModel.WIDTH, GameModel.HEIGHT);
 
-		if (state == GameState.PLAYING) {
+		if (gameModel.getState() == GameState.PLAYING) {
 			handler.render(g);
 		}
 
@@ -75,28 +102,31 @@ public class Game extends Canvas implements Runnable {
 		bs.show();
 	}
 
-	private void initializeSpawns() {
-		if (handler.getPlayer() == null) {
-			spawner.spawnPlayer(handler);
-			spawner.spawnTrackEnemy(handler, handler.getPlayer());
-			spawner.spawnPoint(handler);
-		}
-	}
-
 	private void tick() {
-		if (state == GameState.PLAYING) {
-			if(highscoreSet) {
-				highscoreSet = false;
+		switch (gameModel.getState()) {
+		case PLAYING:
+			if (gameModel.isHighscoreSet()) {
+				gameModel.setHighscoreSet(false);
 			}
 			handler.tick();
+			break;
+		case MENU:
+			break;
+		case GAMEOVER:
+			break;
+		case HIGHSCORES:
+			break;
+		default:
+			break;
 		}
+
 		hud.tick();
 
-		if(Hud.HEALTH <= 0) {
-			if(!highscoreSet) {
+		if (Hud.HEALTH <= 0) {
+			if (!gameModel.isHighscoreSet()) {
 				highscoreService.safeHighscore(Integer.toString(Hud.SCORE));
 			}
-			Game.state = GameState.GAMEOVER;
+			gameModel.setState(GameState.GAMEOVER);
 		}
 	}
 
@@ -113,32 +143,10 @@ public class Game extends Canvas implements Runnable {
 		gameLoop();
 	}
 
-	private void gameLoop() {
-		long lastTime = System.nanoTime();
-		double amountOfTicks = 60.0;
-		double ns = 1000000000 / amountOfTicks;
-		double delta = 0;
-		long timer = System.currentTimeMillis();
-		while (running) {
-			long now = System.nanoTime();
-			delta += (now - lastTime) / ns;
-			lastTime = now;
-			while (delta >= 1) {
-				tick();
-				delta--;
-			}
-			if (running) {
-				render();
-			}
-
-			if (System.currentTimeMillis() - timer > 1000) {
-				timer += 1000;
-			}
-//			glfwPollEvents();
-//			FloatBuffer axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1);
-//			System.out.println(axes.get());
-		}
-		stop();
+	private void initializeSpawns() {
+		spawner.spawnPlayer(handler);
+		spawner.spawnTrackEnemy(handler, handler.getPlayer());
+		spawner.spawnPoint(handler);
 	}
 
 //	private void initGlfw() {

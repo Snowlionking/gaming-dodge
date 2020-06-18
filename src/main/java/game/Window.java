@@ -8,20 +8,28 @@ import javax.swing.JFrame;
 public class Window extends Canvas{
 	
 	private static final long serialVersionUID = -4369730830015653927L;
+	private JFrame frame;
 
 	public Window(int width, int height, String title, Game game) {
-		JFrame frame = new JFrame(title);
+		setFrame(new JFrame(title));
+		getFrame().setPreferredSize(new Dimension(width, height));
+		getFrame().setMaximumSize(new Dimension(width, height));
+		getFrame().setMinimumSize(new Dimension(width, height));
 		
-		frame.setPreferredSize(new Dimension(width, height));
-		frame.setMaximumSize(new Dimension(width, height));
-		frame.setMinimumSize(new Dimension(width, height));
-		
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setResizable(false);
-		frame.setLocationRelativeTo(null);
-		frame.add(game);
-		frame.setVisible(true);
+		getFrame().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		getFrame().setResizable(false);
+		getFrame().setLocationRelativeTo(null);
+		getFrame().add(game);
+		getFrame().setVisible(true);
 		game.start();
+	}
+
+	public JFrame getFrame() {
+		return frame;
+	}
+
+	public void setFrame(JFrame frame) {
+		this.frame = frame;
 	}
 
 }

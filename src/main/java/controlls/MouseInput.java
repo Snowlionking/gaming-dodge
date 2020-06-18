@@ -13,7 +13,6 @@ public class MouseInput extends MouseAdapter{
 	
 	private Handler handler;
 
-
 	public MouseInput(Handler handler) {
 		this.handler = handler;
 	}
@@ -23,23 +22,27 @@ public class MouseInput extends MouseAdapter{
     	int x = e.getX();
     	int y = e.getY();
     	System.out.println("X: " + x + "Y: " + y);
-    	switch (Game.state) {
+    	switch (Game.gameModel.getState()) {
 		case MENU:
 			if (x >= 576 && x <= 704 && y >= 698 && y <= 745) {
 				System.exit(1);
 			}
 			if (x >= 558 && x <= 735 && y >= 521 && y <= 571) {
-				Game.state = GameState.HIGHSCORES;
+				Game.gameModel.setState(GameState.HIGHSCORES);
 			}
 			break;
-		case PLAYING:
+		case HIGHSCORES:
+			if (x >= 0 && x <= 156 && y >= 0 && y <= 66) {
+				Game.gameModel.setState(GameState.MENU);
+				Hud.safeFileRead = false;
+			}
 			break;
 		case GAMEOVER:
 			Hud.SCORE = 0;
 			Hud.HEALTH = 100;
 			handler.getPlayer().setVelX(0);
 			handler.getPlayer().setVelY(0);
-			Game.state = GameState.MENU;
+			Game.gameModel.setState(GameState.MENU);
 		default:
 			break;
 		}
