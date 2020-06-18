@@ -21,16 +21,12 @@ public class KeyInput extends KeyAdapter {
 	public KeyInput(Handler handler) {
 		this.handler = handler;
 	}
-
+	
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
 
 		if (key == KeyEvent.VK_ESCAPE) {
 			System.exit(1);
-		}
-
-		if (Game.gameOver) {
-			return;
 		}
 
 		if (Game.state == GameState.PLAYING) {
@@ -67,9 +63,6 @@ public class KeyInput extends KeyAdapter {
 	}
 
 	public void keyReleased(KeyEvent e) {
-		if (Game.gameOver) {
-			return;
-		}
 		int key = e.getKeyCode();
 
 		if (Game.state == GameState.PLAYING) {
