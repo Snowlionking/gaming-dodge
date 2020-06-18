@@ -5,6 +5,7 @@ public enum GameState {
 	MENU(), //
 	PLAYING(), //
 	GAMEOVER(), //
-	PAUSED();
+	PAUSED(), //
+	HIGHSCORES;
 
 }
