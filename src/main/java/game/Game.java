@@ -6,8 +6,10 @@ import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
 import controlls.KeyInput;
+import controlls.MouseInput;
 import entities.Handler;
 import game.hud.Hud;
+import services.HighscoreService;
 import services.Spawner;
 
 public class Game extends Canvas implements Runnable {
@@ -16,13 +18,13 @@ public class Game extends Canvas implements Runnable {
 
 	public static final int WIDTH = 1280;
 	public static final int HEIGHT = WIDTH / 12 * 9;
-
-	public static boolean gameOver = false;
+	public static boolean highscoreSet = false;
 
 	private boolean running = false;
 
 	public static GameState state;
 
+	private HighscoreService highscoreService = new HighscoreService();
 	private Thread thread;
 	private Handler handler = new Handler();
 	private Hud hud = new Hud();
@@ -83,11 +85,17 @@ public class Game extends Canvas implements Runnable {
 
 	private void tick() {
 		if (state == GameState.PLAYING) {
+			if(highscoreSet) {
+				highscoreSet = false;
+			}
 			handler.tick();
 		}
 		hud.tick();
 
 		if(Hud.HEALTH <= 0) {
+			if(!highscoreSet) {
+				highscoreService.safeHighscore(Integer.toString(Hud.SCORE));
+			}
 			Game.state = GameState.GAMEOVER;
 		}
 	}
@@ -99,6 +107,7 @@ public class Game extends Canvas implements Runnable {
 	public void run() {
 		this.requestFocus();
 		this.addKeyListener(new KeyInput(handler));
+		this.addMouseListener(new MouseInput(handler));
 //		initGlfw();
 
 		gameLoop();
