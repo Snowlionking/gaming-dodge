@@ -147,6 +147,7 @@ public class Game extends Canvas implements Runnable {
 	private void initializeSpawns() {
 		spawner.spawnPlayer(handler);
 		spawner.spawnTrackEnemy(handler, handler.getPlayer());
+		spawner.spawnTeleportEnemy(handler);
 		spawner.spawnPoint(handler);
 	}
 

@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.util.LinkedList;
 
 import entities.enemies.Enemy;
+import entities.enemies.TeleportEnemy;
 import entities.enemies.TrackEnemy;
 import entities.powerups.PowerUp;
 
@@ -14,10 +15,12 @@ public class Handler {
 	private Player player;
 	private Point point;
 	private TrackEnemy trackEnemy;
+	private TeleportEnemy teleportEnemy;
 	
 	public void tick() {
 		player.tick();
 		trackEnemy.tick();
+		teleportEnemy.tick();
 		for (int i = 0; i < enemyList.size(); i++) {
 			Enemy enemy = enemyList.get(i);
 			enemy.tick();
@@ -34,6 +37,7 @@ public class Handler {
 		player.render(g);
 		point.render(g);
 		trackEnemy.render(g);
+		teleportEnemy.render(g);
 	}
 	
 	public void addEnemy(Enemy enemy) {
@@ -86,5 +90,13 @@ public class Handler {
 
 	public void setTrackEnemy(TrackEnemy trackEnemy) {
 		this.trackEnemy = trackEnemy;
+	}
+
+	public TeleportEnemy getTeleportEnemy() {
+		return teleportEnemy;
+	}
+
+	public void setTeleportEnemy(TeleportEnemy teleportEnemy) {
+		this.teleportEnemy = teleportEnemy;
 	}
 }

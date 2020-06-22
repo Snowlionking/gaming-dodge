@@ -19,5 +19,8 @@ public class Randomizer {
 		return -speed;
 	}
 	
+	public int randomNumber(int upperBound) {
+		return random.nextInt(upperBound);
+	}
 
 }

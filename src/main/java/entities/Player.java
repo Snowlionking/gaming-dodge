@@ -56,7 +56,7 @@ public class Player extends GameObject {
 			Hud.HEALTH += handler.getPoint().getRegeneration();
 			switch (Game.gameModel.getLevel()) {
 			case 1:
-				spawner.spawnBasicEnemy(handler);
+				spawner.spawnTeleportEnemy(handler);
 				break;
 			case 2:
 				spawner.spawnFastEnemy(handler);
