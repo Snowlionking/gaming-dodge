@@ -108,6 +108,7 @@ public class Game extends Canvas implements Runnable {
 			if (gameModel.isHighscoreSet()) {
 				gameModel.setHighscoreSet(false);
 			}
+			gameModel.setLevel(Hud.SCORE / 100 + 1);
 			handler.tick();
 			break;
 		case MENU:

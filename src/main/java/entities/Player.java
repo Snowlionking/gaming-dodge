@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 import java.util.Iterator;
 
 import entities.enemies.Enemy;
+import game.Game;
 import game.GameModel;
 import game.hud.Hud;
 import services.InboundService;
@@ -53,7 +54,22 @@ public class Player extends GameObject {
 		if (doesPlayerCollideWithSomething(handler.getPoint())) {
 			Hud.SCORE += handler.getPoint().getPoints();
 			Hud.HEALTH += handler.getPoint().getRegeneration();
-			spawner.spawnBasicEnemy(handler);
+			switch (Game.gameModel.getLevel()) {
+			case 1:
+				spawner.spawnBasicEnemy(handler);
+				break;
+			case 2:
+				spawner.spawnFastEnemy(handler);
+				break;
+			case 3:
+				spawner.spawnBasicEnemy(handler);
+				spawner.spawnFastEnemy(handler);
+				break;
+			case 4:
+				break;
+			default:
+				break;
+			}
 			spawner.spawnPoint(handler);
 		}
 	}
