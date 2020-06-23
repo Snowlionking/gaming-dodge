@@ -50,13 +50,18 @@ public class Player extends GameObject {
 			Hud.HEALTH -= handler.getTrackEnemy().getDamage();
 			spawner.spawnTrackEnemy(handler, this);
 		}
+		
+		if(doesPlayerCollideWithSomething(handler.getTeleportEnemy())) {
+			Hud.HEALTH -= handler.getTeleportEnemy().getDamage();
+			spawner.spawnTeleportEnemy(handler);
+		}
 
 		if (doesPlayerCollideWithSomething(handler.getPoint())) {
 			Hud.SCORE += handler.getPoint().getPoints();
 			Hud.HEALTH += handler.getPoint().getRegeneration();
 			switch (Game.gameModel.getLevel()) {
 			case 1:
-				spawner.spawnTeleportEnemy(handler);
+				spawner.spawnBasicEnemy(handler);
 				break;
 			case 2:
 				spawner.spawnFastEnemy(handler);
