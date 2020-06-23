@@ -45,7 +45,7 @@ public class Hud {
 			g.setColor(Color.white);
 			g.setFont(new Font("TimesRoman", Font.PLAIN, 24));
 			g.drawRect(GameModel.WIDTH / 2 - 115, GameModel.HEIGHT / 2 - 115, 256, 48);
-			g.drawString("PRESS \"P\" TO PLAY", GameModel.WIDTH / 2 - 100, GameModel.HEIGHT / 2 - 80);
+			g.drawString("PLAY", GameModel.WIDTH / 2 - 100, GameModel.HEIGHT / 2 - 80);
 			g.drawRect(GameModel.WIDTH / 2 - 84, GameModel.HEIGHT / 2 + 44, 180, 48);
 			g.drawString("HIGHSCORES", GameModel.WIDTH / 2 - 75, GameModel.HEIGHT / 2 + 75);
 			g.drawRect(GameModel.WIDTH / 2 - 64, GameModel.HEIGHT - 256, 128, 48);
