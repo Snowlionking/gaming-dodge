@@ -37,9 +37,10 @@ public class Hud {
 			g.setColor(Color.white);
 			g.drawRect(1, 1, 100, 24);
 			g.setColor(Color.white);
-			g.drawString("Health: " + Integer.toString(HEALTH), 2, 48);
+			g.setFont(new Font("Book Antiqua", Font.PLAIN, 18));
+			g.drawString("Health: " + Integer.toString(HEALTH), 2, 44);
+			g.drawString("Level: " + Integer.toString(Game.gameModel.getLevel()), 2, 84);
 			g.drawString("Score: " + Integer.toString(SCORE), 2, 64);
-			g.drawString("Level: " + Integer.toString(Game.gameModel.getLevel()), 2, 80);
 			break;
 		case MENU:
 			g.setColor(Color.white);
