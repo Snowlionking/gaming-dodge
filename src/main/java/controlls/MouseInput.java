@@ -27,6 +27,9 @@ public class MouseInput extends MouseAdapter{
 			if (x >= 576 && x <= 704 && y >= 698 && y <= 745) {
 				System.exit(1);
 			}
+			if (x >= 596 && x <= 684 && y >= 364 && y <= 411) {
+				Game.gameModel.setState(GameState.PLAYING);
+			}
 			if (x >= 558 && x <= 735 && y >= 521 && y <= 571) {
 				Game.gameModel.setState(GameState.HIGHSCORES);
 			}
