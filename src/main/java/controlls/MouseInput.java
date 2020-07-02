@@ -29,11 +29,13 @@ public class MouseInput extends MouseAdapter{
 			}
 			if (x >= 558 && x <= 735 && y >= 521 && y <= 571) {
 				Game.gameModel.setState(GameState.HIGHSCORES);
+				Game.gameModel.setMusicRunning(false);
 			}
 			break;
 		case HIGHSCORES:
 			if (x >= 0 && x <= 156 && y >= 0 && y <= 66) {
 				Game.gameModel.setState(GameState.MENU);
+				Game.gameModel.setMusicRunning(false);
 				Hud.safeFileRead = false;
 			}
 			break;
@@ -43,6 +45,7 @@ public class MouseInput extends MouseAdapter{
 			handler.getPlayer().setVelX(0);
 			handler.getPlayer().setVelY(0);
 			Game.gameModel.setState(GameState.MENU);
+			Game.gameModel.setMusicRunning(false);
 		default:
 			break;
 		}

@@ -4,6 +4,15 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
+import java.io.File;
+import java.io.IOException;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 import controlls.KeyInput;
 import controlls.MouseInput;
@@ -30,6 +39,7 @@ public class Game extends Canvas implements Runnable {
 		gameModel.setLevel(1);
 		gameModel.setRunning(false);
 		gameModel.setState(GameState.MENU);
+		gameModel.setMusicRunning(false);
 
 		new Window(GameModel.WIDTH, GameModel.HEIGHT, "Dodge-City", this);
 	}
@@ -69,15 +79,36 @@ public class Game extends Canvas implements Runnable {
 				delta--;
 			}
 
-
 			if (System.currentTimeMillis() - timer > 1000) {
 				timer += 1000;
 			}
-//			glfwPollEvents();
-//			FloatBuffer axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1);
-//			System.out.println(axes.get());
 		}
 		stop();
+	}
+
+	private void startMusic(String musicPath) {
+		try {
+
+			if (gameModel.getClip().isOpen()) {
+				gameModel.getClip().close();
+			}
+
+			AudioInputStream audioIn = AudioSystem.getAudioInputStream(new File("music\\" + musicPath));
+
+			gameModel.getClip().open(audioIn);
+			FloatControl volume = (FloatControl) gameModel.getClip().getControl(FloatControl.Type.MASTER_GAIN);
+			volume.setValue(-10);
+			gameModel.getClip().loop(Clip.LOOP_CONTINUOUSLY);
+			gameModel.getClip().start();
+			gameModel.setMusicRunning(true);
+
+		} catch (UnsupportedAudioFileException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (LineUnavailableException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void render() {
@@ -105,6 +136,9 @@ public class Game extends Canvas implements Runnable {
 	private void tick() {
 		switch (gameModel.getState()) {
 		case PLAYING:
+			if (!gameModel.isMusicRunning()) {
+				startMusic("Blazer_Rail.wav");
+			}
 			if (gameModel.isHighscoreSet()) {
 				gameModel.setHighscoreSet(false);
 			}
@@ -112,10 +146,19 @@ public class Game extends Canvas implements Runnable {
 			handler.tick();
 			break;
 		case MENU:
+			if (!gameModel.isMusicRunning()) {
+				startMusic("Blazer_Rail.wav");
+			}
 			break;
 		case GAMEOVER:
+			if (!gameModel.isMusicRunning()) {
+				startMusic("Star_Commander1.wav");
+			}
 			break;
 		case HIGHSCORES:
+			if (!gameModel.isMusicRunning()) {
+				startMusic("Patakas_World.wav");
+			}
 			break;
 		default:
 			break;
@@ -127,7 +170,9 @@ public class Game extends Canvas implements Runnable {
 			if (!gameModel.isHighscoreSet()) {
 				highscoreService.safeHighscore(Integer.toString(Hud.SCORE));
 			}
+			Hud.HEALTH = 100;
 			gameModel.setState(GameState.GAMEOVER);
+			gameModel.setMusicRunning(false);
 		}
 	}
 
@@ -139,7 +184,6 @@ public class Game extends Canvas implements Runnable {
 		this.requestFocus();
 		this.addKeyListener(new KeyInput(handler));
 		this.addMouseListener(new MouseInput(handler));
-//		initGlfw();
 
 		gameLoop();
 	}
@@ -150,10 +194,4 @@ public class Game extends Canvas implements Runnable {
 		spawner.spawnTeleportEnemy(handler);
 		spawner.spawnPoint(handler);
 	}
-
-//	private void initGlfw() {
-//		if (!glfwInit())
-//			throw new IllegalStateException("Unable to initialize GLFW");
-//	}
-
 }
