@@ -45,15 +45,19 @@ public class Player extends GameObject {
 				enemyIterator.remove();
 			}
 		}
-		
-		if(doesPlayerCollideWithSomething(handler.getTrackEnemy())) {
-			Hud.HEALTH -= handler.getTrackEnemy().getDamage();
-			spawner.spawnTrackEnemy(handler, this);
+
+		if (handler.getTrackEnemy() != null) {
+			if (doesPlayerCollideWithSomething(handler.getTrackEnemy())) {
+				Hud.HEALTH -= handler.getTrackEnemy().getDamage();
+				spawner.spawnTrackEnemy(handler, this);
+			}
 		}
-		
-		if(doesPlayerCollideWithSomething(handler.getTeleportEnemy())) {
-			Hud.HEALTH -= handler.getTeleportEnemy().getDamage();
-			spawner.spawnTeleportEnemy(handler);
+
+		if (handler.getTeleportEnemy() != null) {
+			if (doesPlayerCollideWithSomething(handler.getTeleportEnemy())) {
+				Hud.HEALTH -= handler.getTeleportEnemy().getDamage();
+				spawner.spawnTeleportEnemy(handler);
+			}
 		}
 
 		if (doesPlayerCollideWithSomething(handler.getPoint())) {
@@ -67,8 +71,9 @@ public class Player extends GameObject {
 				spawner.spawnFastEnemy(handler);
 				break;
 			case 3:
-				spawner.spawnBasicEnemy(handler);
-				spawner.spawnFastEnemy(handler);
+				if(handler.getTrackEnemy() == null) {
+					spawner.spawnTrackEnemy(handler, this);
+				}
 				break;
 			case 4:
 				break;

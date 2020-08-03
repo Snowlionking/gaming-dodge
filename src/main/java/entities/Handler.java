@@ -9,18 +9,24 @@ import entities.enemies.TrackEnemy;
 import entities.powerups.PowerUp;
 
 public class Handler {
-	
+
 	private LinkedList<Enemy> enemyList = new LinkedList<Enemy>();
 	private LinkedList<PowerUp> powerUpList = new LinkedList<PowerUp>();
 	private Player player;
 	private Point point;
 	private TrackEnemy trackEnemy;
 	private TeleportEnemy teleportEnemy;
-	
+
 	public void tick() {
 		player.tick();
-		trackEnemy.tick();
-		teleportEnemy.tick();
+
+		if (trackEnemy != null) {
+			trackEnemy.tick();
+		}
+
+		if (teleportEnemy != null) {
+			teleportEnemy.tick();
+		}
 		for (int i = 0; i < enemyList.size(); i++) {
 			Enemy enemy = enemyList.get(i);
 			enemy.tick();
@@ -28,18 +34,28 @@ public class Handler {
 	}
 
 	public void render(Graphics g) {
-		for(Enemy enemy: enemyList) {
+		for (Enemy enemy : enemyList) {
 			enemy.render(g);
 		}
-		for(PowerUp powerUp: powerUpList) {
+		for (PowerUp powerUp : powerUpList) {
 			powerUp.render(g);
 		}
 		player.render(g);
 		point.render(g);
-		trackEnemy.render(g);
-		teleportEnemy.render(g);
+
+		if (trackEnemy != null) {
+			trackEnemy.render(g);
+		}
+
+		if (trackEnemy != null) {
+			teleportEnemy.render(g);
+		}
 	}
-	
+
+	public void resetAllEntities() {
+
+	}
+
 	public void addEnemy(Enemy enemy) {
 		this.enemyList.add(enemy);
 	}
