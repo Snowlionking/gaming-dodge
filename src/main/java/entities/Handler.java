@@ -10,109 +10,114 @@ import entities.powerups.PowerUp;
 
 public class Handler {
 
-	private LinkedList<Enemy> enemyList = new LinkedList<Enemy>();
-	private LinkedList<PowerUp> powerUpList = new LinkedList<PowerUp>();
-	private Player player;
-	private Point point;
-	private TrackEnemy trackEnemy;
-	private TeleportEnemy teleportEnemy;
+    private LinkedList<Enemy> enemyList = new LinkedList<Enemy>();
 
-	public void tick() {
-		player.tick();
+    private LinkedList<PowerUp> powerUpList = new LinkedList<PowerUp>();
 
-		if (trackEnemy != null) {
-			trackEnemy.tick();
-		}
+    private Player player;
 
-		if (teleportEnemy != null) {
-			teleportEnemy.tick();
-		}
-		for (int i = 0; i < enemyList.size(); i++) {
-			Enemy enemy = enemyList.get(i);
-			enemy.tick();
-		}
-	}
+    private Point point;
 
-	public void render(Graphics g) {
-		for (Enemy enemy : enemyList) {
-			enemy.render(g);
-		}
-		for (PowerUp powerUp : powerUpList) {
-			powerUp.render(g);
-		}
-		player.render(g);
-		point.render(g);
+    private TrackEnemy trackEnemy;
 
-		if (trackEnemy != null) {
-			trackEnemy.render(g);
-		}
+    private TeleportEnemy teleportEnemy;
 
-		if (trackEnemy != null) {
-			teleportEnemy.render(g);
-		}
-	}
+    public void tick() {
+        player.tick();
 
-	public void resetAllEntities() {
+        if (trackEnemy != null) {
+            trackEnemy.tick();
+        }
 
-	}
+        if (teleportEnemy != null) {
+            teleportEnemy.tick();
+        }
+        for (int i = 0; i < enemyList.size(); i++) {
+            Enemy enemy = enemyList.get(i);
+            enemy.tick();
+        }
+    }
 
-	public void addEnemy(Enemy enemy) {
-		this.enemyList.add(enemy);
-	}
+    public void render(Graphics g) {
+        for (Enemy enemy : enemyList) {
+            enemy.render(g);
+        }
+        for (PowerUp powerUp : powerUpList) {
+            powerUp.render(g);
+        }
+        player.render(g);
+        point.render(g);
 
-	public void removeEnemy(Enemy enemy) {
-		this.enemyList.remove(enemy);
-	}
+        if (trackEnemy != null) {
+            trackEnemy.render(g);
+        }
 
-	public Player getPlayer() {
-		return player;
-	}
+        if (teleportEnemy != null) {
+            teleportEnemy.render(g);
+        }
+    }
 
-	public void setPlayer(Player player) {
-		this.player = player;
-	}
+    public void resetAllEntities() {
 
-	public Point getPoint() {
-		return point;
-	}
+    }
 
-	public void setPoint(Point point) {
-		this.point = point;
-	}
+    public void addEnemy(Enemy enemy) {
+        this.enemyList.add(enemy);
+    }
 
-	public LinkedList<Enemy> getEnemyList() {
-		return enemyList;
-	}
+    public void removeEnemy(Enemy enemy) {
+        this.enemyList.remove(enemy);
+    }
 
-	public void setEnemyList(LinkedList<Enemy> enemyList) {
-		this.enemyList = enemyList;
-	}
+    public Player getPlayer() {
+        return player;
+    }
 
-	public void addPowerUp(PowerUp powerUp) {
-		this.powerUpList.add(powerUp);
-	}
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
 
-	public LinkedList<PowerUp> getPowerUpList() {
-		return powerUpList;
-	}
+    public Point getPoint() {
+        return point;
+    }
 
-	public void setPowerUpList(LinkedList<PowerUp> powerUpList) {
-		this.powerUpList = powerUpList;
-	}
+    public void setPoint(Point point) {
+        this.point = point;
+    }
 
-	public TrackEnemy getTrackEnemy() {
-		return trackEnemy;
-	}
+    public LinkedList<Enemy> getEnemyList() {
+        return enemyList;
+    }
 
-	public void setTrackEnemy(TrackEnemy trackEnemy) {
-		this.trackEnemy = trackEnemy;
-	}
+    public void setEnemyList(LinkedList<Enemy> enemyList) {
+        this.enemyList = enemyList;
+    }
 
-	public TeleportEnemy getTeleportEnemy() {
-		return teleportEnemy;
-	}
+    public void addPowerUp(PowerUp powerUp) {
+        this.powerUpList.add(powerUp);
+    }
 
-	public void setTeleportEnemy(TeleportEnemy teleportEnemy) {
-		this.teleportEnemy = teleportEnemy;
-	}
+    public LinkedList<PowerUp> getPowerUpList() {
+        return powerUpList;
+    }
+
+    public void setPowerUpList(LinkedList<PowerUp> powerUpList) {
+        this.powerUpList = powerUpList;
+    }
+
+    public TrackEnemy getTrackEnemy() {
+        return trackEnemy;
+    }
+
+    public void setTrackEnemy(TrackEnemy trackEnemy) {
+        this.trackEnemy = trackEnemy;
+    }
+
+    public TeleportEnemy getTeleportEnemy() {
+        return teleportEnemy;
+    }
+
+    public void setTeleportEnemy(TeleportEnemy teleportEnemy) {
+        this.teleportEnemy = teleportEnemy;
+    }
 }
