@@ -14,88 +14,92 @@ import services.Spawner;
 
 public class Player extends GameObject {
 
-	private InboundService inboundService = new InboundService();
-	private Handler handler;
-	private Spawner spawner = new Spawner();
+    private InboundService inboundService = new InboundService();
 
-	public Player(int x, int y, Id id, Handler handler) {
-		super(x, y, id);
-		this.handler = handler;
-	}
+    private Handler handler;
 
-	@Override
-	public void tick() {
-		x += velX;
-		y += velY;
+    private Spawner spawner = new Spawner();
 
-		x = inboundService.clamp(x, 1, GameModel.WIDTH - 49);
-		y = inboundService.clamp(y, 1, GameModel.HEIGHT - 72);
+    public Player(int x, int y, Id id, Handler handler) {
+        super(x, y, id);
+        this.handler = handler;
+    }
 
-		collisionCheck();
-	}
+    @Override
+    public void tick() {
+        x += velX;
+        y += velY;
 
-	private void collisionCheck() {
+        x = inboundService.clamp(x, 1, GameModel.WIDTH - 49);
+        y = inboundService.clamp(y, 1, GameModel.HEIGHT - 72);
 
-		Iterator<Enemy> enemyIterator = handler.getEnemyList().iterator();
+        collisionCheck();
+    }
 
-		while (enemyIterator.hasNext()) {
-			Enemy enemy = enemyIterator.next();
-			if (doesPlayerCollideWithSomething(enemy)) {
-				Hud.HEALTH -= enemy.getDamage();
-				enemyIterator.remove();
-			}
-		}
+    private void collisionCheck() {
 
-		if (handler.getTrackEnemy() != null) {
-			if (doesPlayerCollideWithSomething(handler.getTrackEnemy())) {
-				Hud.HEALTH -= handler.getTrackEnemy().getDamage();
-				spawner.spawnTrackEnemy(handler, this);
-			}
-		}
+        Iterator<Enemy> enemyIterator = handler.getEnemyList().iterator();
 
-		if (handler.getTeleportEnemy() != null) {
-			if (doesPlayerCollideWithSomething(handler.getTeleportEnemy())) {
-				Hud.HEALTH -= handler.getTeleportEnemy().getDamage();
-				spawner.spawnTeleportEnemy(handler);
-			}
-		}
+        while (enemyIterator.hasNext()) {
+            Enemy enemy = enemyIterator.next();
+            if (doesPlayerCollideWithSomething(enemy)) {
+                Game.playSound("hurt.wav");
+                Hud.HEALTH -= enemy.getDamage();
+                enemyIterator.remove();
+            }
+        }
 
-		if (doesPlayerCollideWithSomething(handler.getPoint())) {
-			Hud.SCORE += handler.getPoint().getPoints();
-			Hud.HEALTH += handler.getPoint().getRegeneration();
-			switch (Game.gameModel.getLevel()) {
-			case 1:
-				spawner.spawnBasicEnemy(handler);
-				break;
-			case 2:
-				spawner.spawnFastEnemy(handler);
-				break;
-			case 3:
-				if(handler.getTrackEnemy() == null) {
-					spawner.spawnTrackEnemy(handler, this);
-				}
-				break;
-			case 4:
-				break;
-			default:
-				break;
-			}
-			spawner.spawnPoint(handler);
-		}
-	}
+        if (handler.getTrackEnemy() != null) {
+            if (doesPlayerCollideWithSomething(handler.getTrackEnemy())) {
+                Hud.HEALTH -= handler.getTrackEnemy().getDamage();
+                spawner.spawnTrackEnemy(handler, this);
+            }
+        }
 
-	private boolean doesPlayerCollideWithSomething(GameObject object) {
-		return getBounds().intersects(object.getBounds());
-	}
+        if (handler.getTeleportEnemy() != null) {
+            if (doesPlayerCollideWithSomething(handler.getTeleportEnemy())) {
+                Hud.HEALTH -= handler.getTeleportEnemy().getDamage();
+                spawner.spawnTeleportEnemy(handler);
+            }
+        }
 
-	@Override
-	public void render(Graphics g) {
-		g.setColor(Color.yellow);
-		g.fillRect(x, y, 32, 32);
-	}
+        if (doesPlayerCollideWithSomething(handler.getPoint())) {
+            Game.playSound("pop.wav");
+            Hud.SCORE += handler.getPoint().getPoints();
+            Hud.HEALTH += handler.getPoint().getRegeneration();
+            switch (Game.gameModel.getLevel()) {
+                case 1:
+                    spawner.spawnBasicEnemy(handler);
+                    break;
+                case 2:
+                    spawner.spawnFastEnemy(handler);
+                    break;
+                case 3:
+                    if (handler.getTrackEnemy() == null) {
+                        spawner.spawnTrackEnemy(handler, this);
+                    }
+                    break;
+                case 4:
+                    break;
+                default:
+                    break;
+            }
+            spawner.spawnPoint(handler);
+        }
+    }
 
-	@Override
-	public Rectangle getBounds() {
-		return new Rectangle(x, y, 32, 32);
-	}
+    private boolean doesPlayerCollideWithSomething(GameObject object) {
+        return getBounds().intersects(object.getBounds());
+    }
+
+    @Override
+    public void render(Graphics g) {
+        g.setColor(Color.yellow);
+        g.fillRect(x, y, 32, 32);
+    }
+
+    @Override
+    public Rectangle getBounds() {
+        return new Rectangle(x, y, 32, 32);
+    }
 }

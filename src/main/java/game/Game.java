@@ -23,174 +23,203 @@ import services.Spawner;
 
 public class Game extends Canvas implements Runnable {
 
-	private static final long serialVersionUID = -4584388369897487885L;
+    private static final long serialVersionUID = -4584388369897487885L;
 
-	public static GameModel gameModel = new GameModel();
+    public static GameModel gameModel = new GameModel();
 
-	private HighscoreService highscoreService = new HighscoreService();
+    private HighscoreService highscoreService = new HighscoreService();
 
-	private Thread thread;
-	private Handler handler = new Handler();
-	private Hud hud = new Hud();
-	private Spawner spawner = new Spawner();
+    private Thread thread;
 
-	public Game() {
-		gameModel.setHighscoreSet(false);
-		gameModel.setLevel(1);
-		gameModel.setRunning(false);
-		gameModel.setState(GameState.MENU);
-		gameModel.setMusicRunning(false);
+    private Handler handler = new Handler();
 
-		new Window(GameModel.WIDTH, GameModel.HEIGHT, "Dodge-City", this);
-	}
+    private Hud hud = new Hud();
 
-	public synchronized void start() {
-		thread = new Thread(this);
-		thread.start();
-		gameModel.setRunning(true);
-	}
+    private Spawner spawner = new Spawner();
 
-	public synchronized void stop() {
-		try {
-			thread.join();
-			gameModel.setRunning(false);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+    public Game() {
+        gameModel.setHighscoreSet(false);
+        gameModel.setLevel(1);
+        gameModel.setRunning(false);
+        gameModel.setState(GameState.MENU);
+        gameModel.setMusicRunning(false);
 
-	private void gameLoop() {
+        new Window(GameModel.WIDTH, GameModel.HEIGHT, "Dodge-City", this);
+    }
 
-		long lastTime = System.nanoTime();
-		double amountOfTicks = 60.0;
-		double ns = 1000000000 / amountOfTicks;
-		double delta = 0;
-		long timer = System.currentTimeMillis();
+    public synchronized void start() {
+        thread = new Thread(this);
+        thread.start();
+        gameModel.setRunning(true);
+    }
 
-		initializeSpawns();
-		while (gameModel.isRunning()) {
-			long now = System.nanoTime();
-			delta += (now - lastTime) / ns;
-			lastTime = now;
+    public synchronized void stop() {
+        try {
+            thread.join();
+            gameModel.setRunning(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-			while (delta >= 1) {
-				tick();
-				render();
-				delta--;
-			}
+    private void gameLoop() {
 
-			if (System.currentTimeMillis() - timer > 1000) {
-				timer += 1000;
-			}
-		}
-		stop();
-	}
+        long lastTime = System.nanoTime();
+        double amountOfTicks = 60.0;
+        double ns = 1000000000 / amountOfTicks;
+        double delta = 0;
+        long timer = System.currentTimeMillis();
 
-	private void startMusic(String musicPath) {
-		try {
+        initializeSpawns();
+        while (gameModel.isRunning()) {
+            long now = System.nanoTime();
+            delta += (now - lastTime) / ns;
+            lastTime = now;
 
-			if (gameModel.getClip().isOpen()) {
-				gameModel.getClip().close();
-			}
+            while (delta >= 1) {
+                tick();
+                render();
+                delta--;
+            }
 
-			AudioInputStream audioIn = AudioSystem.getAudioInputStream(new File("music\\" + musicPath));
+            if (System.currentTimeMillis() - timer > 1000) {
+                timer += 1000;
+            }
+        }
+        stop();
+    }
 
-			gameModel.getClip().open(audioIn);
-			FloatControl volume = (FloatControl) gameModel.getClip().getControl(FloatControl.Type.MASTER_GAIN);
-			volume.setValue(-10);
-			gameModel.getClip().loop(Clip.LOOP_CONTINUOUSLY);
-			gameModel.getClip().start();
-			gameModel.setMusicRunning(true);
+    public static void playSound(String musicPath) {
+        try {
 
-		} catch (UnsupportedAudioFileException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (LineUnavailableException e) {
-			e.printStackTrace();
-		}
-	}
+            Clip sound = AudioSystem.getClip();
 
-	private void render() {
-		BufferStrategy bs = this.getBufferStrategy();
-		if (bs == null) {
-			this.createBufferStrategy(3);
-			return;
-		}
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(new File("music\\" + musicPath));
 
-		Graphics g = bs.getDrawGraphics();
+            sound.open(audioIn);
+            FloatControl volume = (FloatControl) sound.getControl(FloatControl.Type.MASTER_GAIN);
+            volume.setValue(GameModel.soundVolume);
+            sound.start();
 
-		g.setColor(Color.black);
-		g.fillRect(0, 0, GameModel.WIDTH, GameModel.HEIGHT);
+        } catch (UnsupportedAudioFileException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (LineUnavailableException e) {
+            e.printStackTrace();
+        }
+    }
 
-		if (gameModel.getState() == GameState.PLAYING) {
-			handler.render(g);
-		}
+    private void startMusic(String musicPath) {
+        try {
 
-		hud.render(g);
+            if (gameModel.getClip().isOpen()) {
+                gameModel.getClip().close();
+            }
 
-		g.dispose();
-		bs.show();
-	}
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(new File("music\\" + musicPath));
 
-	private void tick() {
-		switch (gameModel.getState()) {
-		case PLAYING:
-			if (!gameModel.isMusicRunning()) {
-				startMusic("Blazer_Rail.wav");
-			}
-			if (gameModel.isHighscoreSet()) {
-				gameModel.setHighscoreSet(false);
-			}
-			gameModel.setLevel(Hud.SCORE / 100 + 1);
-			handler.tick();
-			break;
-		case MENU:
-			if (!gameModel.isMusicRunning()) {
-				startMusic("Blazer_Rail.wav");
-			}
-			break;
-		case GAMEOVER:
-			if (!gameModel.isMusicRunning()) {
-				startMusic("Star_Commander1.wav");
-			}
-			break;
-		case HIGHSCORES:
-			if (!gameModel.isMusicRunning()) {
-				startMusic("Patakas_World.wav");
-			}
-			break;
-		default:
-			break;
-		}
+            gameModel.getClip().open(audioIn);
+            FloatControl volume = (FloatControl) gameModel.getClip().getControl(FloatControl.Type.MASTER_GAIN);
+            volume.setValue(GameModel.musicVolume);
+            gameModel.getClip().loop(Clip.LOOP_CONTINUOUSLY);
+            gameModel.getClip().start();
+            gameModel.setMusicRunning(true);
 
-		hud.tick();
+        } catch (UnsupportedAudioFileException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (LineUnavailableException e) {
+            e.printStackTrace();
+        }
+    }
 
-		if (Hud.HEALTH <= 0) {
-			if (!gameModel.isHighscoreSet()) {
-				highscoreService.safeHighscore(Integer.toString(Hud.SCORE));
-				handler.resetAllEntities();
-			}
-			Hud.HEALTH = 100;
-			gameModel.setState(GameState.GAMEOVER);
-			gameModel.setMusicRunning(false);
-		}
-	}
+    private void render() {
+        BufferStrategy bs = this.getBufferStrategy();
+        if (bs == null) {
+            this.createBufferStrategy(3);
+            return;
+        }
 
-	public static void main(String[] args) {
-		new Game();
-	}
+        Graphics g = bs.getDrawGraphics();
 
-	public void run() {
-		this.requestFocus();
-		this.addKeyListener(new KeyInput(handler));
-		this.addMouseListener(new MouseInput(handler));
+        g.setColor(Color.black);
+        g.fillRect(0, 0, GameModel.WIDTH, GameModel.HEIGHT);
 
-		gameLoop();
-	}
+        if (gameModel.getState() == GameState.PLAYING) {
+            handler.render(g);
+        }
 
-	private void initializeSpawns() {
-		spawner.spawnPlayer(handler);
-		spawner.spawnPoint(handler);
-	}
+        hud.render(g);
+
+        g.dispose();
+        bs.show();
+    }
+
+    private void tick() {
+        switch (gameModel.getState()) {
+            case PLAYING:
+                if (!gameModel.isMusicRunning()) {
+                    startMusic("Blazer_Rail.wav");
+                }
+                if (gameModel.isHighscoreSet()) {
+                    gameModel.setHighscoreSet(false);
+                }
+                gameModel.setLevel(Hud.SCORE / 100 + 1);
+                handler.tick();
+                break;
+            case MENU:
+                if (!gameModel.isMusicRunning()) {
+                    startMusic("Blazer_Rail.wav");
+                }
+                break;
+            case GAMEOVER:
+                if (!gameModel.isMusicRunning()) {
+                    startMusic("Star_Commander1.wav");
+                }
+                break;
+            case HIGHSCORES:
+                if (!gameModel.isMusicRunning()) {
+                    startMusic("Patakas_World.wav");
+                }
+                break;
+            case SETTINGS:
+                if (!gameModel.isMusicRunning()) {
+                    startMusic("Blazer_Rail.wav");
+                }
+                break;
+            default:
+                break;
+        }
+
+        hud.tick();
+
+        if (Hud.HEALTH <= 0) {
+            if (!gameModel.isHighscoreSet()) {
+                highscoreService.safeHighscore(Integer.toString(Hud.SCORE));
+                handler.resetAllEntities();
+            }
+            Hud.HEALTH = 100;
+            gameModel.setState(GameState.GAMEOVER);
+            gameModel.setMusicRunning(false);
+        }
+    }
+
+    public static void main(String[] args) {
+        new Game();
+    }
+
+    public void run() {
+        this.requestFocus();
+        this.addKeyListener(new KeyInput(handler));
+        this.addMouseListener(new MouseInput(handler));
+
+        gameLoop();
+    }
+
+    private void initializeSpawns() {
+        spawner.spawnPlayer(handler);
+        spawner.spawnPoint(handler);
+    }
 }
