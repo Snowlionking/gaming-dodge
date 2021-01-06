@@ -2,10 +2,11 @@ package game;
 
 public enum GameState {
 
-	MENU(), //
-	PLAYING(), //
-	GAMEOVER(), //
-	PAUSED(), //
-	HIGHSCORES;
+    MENU(), //
+    PLAYING(), //
+    GAMEOVER(), //
+    PAUSED(), //
+    SETTINGS(), //
+    HIGHSCORES;
 
 }

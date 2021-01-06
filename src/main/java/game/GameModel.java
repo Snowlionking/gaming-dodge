@@ -4,72 +4,37 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 
+import lombok.Data;
+
+@Data
 public class GameModel {
 
-	public static final int WIDTH = 1280;
-	public static final int HEIGHT = WIDTH / 12 * 9;
-	
-	private boolean highscoreSet;
-	private GameState state;
-	private int level;
-	private boolean running;
-	private boolean musicRunning;
-	private Clip clip;
-	
-	public GameModel() {
-		try {
-			setClip(AudioSystem.getClip());
-		} catch (LineUnavailableException e) {
-			e.printStackTrace();
-		}
-	}
+    public static final int WIDTH = 1280;
 
-	public boolean isHighscoreSet() {
-		return highscoreSet;
-	}
+    public static final int HEIGHT = WIDTH / 12 * 9;
 
-	public void setHighscoreSet(boolean highscoreSet) {
-		this.highscoreSet = highscoreSet;
-	}
+    public static long soundVolume = 0;
 
-	public GameState getState() {
-		return state;
-	}
+    public static long musicVolume = 0;
 
-	public void setState(GameState state) {
-		this.state = state;
-	}
+    private boolean highscoreSet;
 
-	public int getLevel() {
-		return level;
-	}
+    private GameState state;
 
-	public void setLevel(int level) {
-		this.level = level;
-	}
+    private int level;
 
-	public boolean isRunning() {
-		return running;
-	}
+    private boolean running;
 
-	public void setRunning(boolean running) {
-		this.running = running;
-	}
+    private boolean musicRunning;
 
-	public boolean isMusicRunning() {
-		return musicRunning;
-	}
+    private Clip clip;
 
-	public void setMusicRunning(boolean musicRunning) {
-		this.musicRunning = musicRunning;
-	}
-
-	public Clip getClip() {
-		return clip;
-	}
-
-	public void setClip(Clip clip) {
-		this.clip = clip;
-	}
+    public GameModel() {
+        try {
+            setClip(AudioSystem.getClip());
+        } catch (LineUnavailableException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
