@@ -58,7 +58,9 @@ public class Handler {
     }
 
     public void resetAllEntities() {
-
+        enemyList = new LinkedList<Enemy>();
+        trackEnemy = null;
+        teleportEnemy = null;
     }
 
     public void addEnemy(Enemy enemy) {
