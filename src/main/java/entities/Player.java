@@ -9,6 +9,7 @@ import entities.enemies.Enemy;
 import game.Game;
 import game.GameModel;
 import game.hud.Hud;
+import game.music.Music;
 import services.InboundService;
 import services.Spawner;
 
@@ -17,6 +18,8 @@ public class Player extends GameObject {
     private InboundService inboundService = new InboundService();
 
     private Handler handler;
+
+    private Music music = new Music();
 
     private Spawner spawner = new Spawner();
 
@@ -43,7 +46,7 @@ public class Player extends GameObject {
         while (enemyIterator.hasNext()) {
             Enemy enemy = enemyIterator.next();
             if (doesPlayerCollideWithSomething(enemy)) {
-                Game.playSound("hurt.wav");
+                music.playSound("hurt.wav");
                 Hud.HEALTH -= enemy.getDamage();
                 enemyIterator.remove();
             }
@@ -64,7 +67,7 @@ public class Player extends GameObject {
         }
 
         if (doesPlayerCollideWithSomething(handler.getPoint())) {
-            Game.playSound("pop.wav");
+            music.playSound("pop.wav");
             Hud.SCORE += handler.getPoint().getPoints();
             Hud.HEALTH += handler.getPoint().getRegeneration();
             switch (Game.gameModel.getLevel()) {

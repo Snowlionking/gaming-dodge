@@ -4,20 +4,12 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
-import java.io.File;
-import java.io.IOException;
-
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.FloatControl;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 
 import controlls.KeyInput;
 import controlls.MouseInput;
 import entities.Handler;
 import game.hud.Hud;
+import game.music.Music;
 import services.HighscoreService;
 import services.Spawner;
 
@@ -34,6 +26,8 @@ public class Game extends Canvas implements Runnable {
     private Handler handler = new Handler();
 
     private Hud hud = new Hud();
+
+    private Music music = new Music();
 
     private Spawner spawner = new Spawner();
 
@@ -89,52 +83,6 @@ public class Game extends Canvas implements Runnable {
         stop();
     }
 
-    public static void playSound(String musicPath) {
-        try {
-
-            Clip sound = AudioSystem.getClip();
-
-            AudioInputStream audioIn = AudioSystem.getAudioInputStream(new File("music\\" + musicPath));
-
-            sound.open(audioIn);
-            FloatControl volume = (FloatControl) sound.getControl(FloatControl.Type.MASTER_GAIN);
-            volume.setValue(GameModel.soundVolume);
-            sound.start();
-
-        } catch (UnsupportedAudioFileException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (LineUnavailableException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void startMusic(String musicPath) {
-        try {
-
-            if (gameModel.getClip().isOpen()) {
-                gameModel.getClip().close();
-            }
-
-            AudioInputStream audioIn = AudioSystem.getAudioInputStream(new File("music\\" + musicPath));
-
-            gameModel.getClip().open(audioIn);
-            FloatControl volume = (FloatControl) gameModel.getClip().getControl(FloatControl.Type.MASTER_GAIN);
-            volume.setValue(GameModel.musicVolume);
-            gameModel.getClip().loop(Clip.LOOP_CONTINUOUSLY);
-            gameModel.getClip().start();
-            gameModel.setMusicRunning(true);
-
-        } catch (UnsupportedAudioFileException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (LineUnavailableException e) {
-            e.printStackTrace();
-        }
-    }
-
     private void render() {
         BufferStrategy bs = this.getBufferStrategy();
         if (bs == null) {
@@ -161,7 +109,7 @@ public class Game extends Canvas implements Runnable {
         switch (gameModel.getState()) {
             case PLAYING:
                 if (!gameModel.isMusicRunning()) {
-                    startMusic("Blazer_Rail.wav");
+                    music.startMusic("Blazer_Rail.wav");
                 }
                 if (gameModel.isHighscoreSet()) {
                     gameModel.setHighscoreSet(false);
@@ -171,22 +119,22 @@ public class Game extends Canvas implements Runnable {
                 break;
             case MENU:
                 if (!gameModel.isMusicRunning()) {
-                    startMusic("Blazer_Rail.wav");
+                    music.startMusic("Blazer_Rail.wav");
                 }
                 break;
             case GAMEOVER:
                 if (!gameModel.isMusicRunning()) {
-                    startMusic("Star_Commander1.wav");
+                    music.startMusic("Star_Commander1.wav");
                 }
                 break;
             case HIGHSCORES:
                 if (!gameModel.isMusicRunning()) {
-                    startMusic("Patakas_World.wav");
+                    music.startMusic("Patakas_World.wav");
                 }
                 break;
             case SETTINGS:
                 if (!gameModel.isMusicRunning()) {
-                    startMusic("Blazer_Rail.wav");
+                    music.startMusic("Blazer_Rail.wav");
                 }
                 break;
             default:

@@ -9,11 +9,14 @@ import game.Game;
 import game.GameModel;
 import game.GameState;
 import game.hud.Hud;
+import game.music.Music;
 import services.VolumeConverter;
 
 public class MouseInput extends MouseAdapter {
 
     private Handler handler;
+
+    private Music music = new Music();
 
     private VolumeConverter volumeConverter = new VolumeConverter();
 
@@ -120,57 +123,57 @@ public class MouseInput extends MouseAdapter {
                 if (x >= 113 && x <= 163 && y >= 537 && y <= 637) {
                     Hud.soundX = GameModel.WIDTH / 2 - 505;
                     GameModel.soundVolume = volumeConverter.convertFromPercentageToVolume(-80);
-                    Game.playSound("hurt.wav");
+                    music.playSound("hurt.wav");
                 }
                 if (x >= 213 && x <= 263 && y >= 537 && y <= 637) {
                     Hud.soundX = GameModel.WIDTH / 2 - 405;
                     GameModel.soundVolume = volumeConverter.convertFromPercentageToVolume(-72);
-                    Game.playSound("hurt.wav");
+                    music.playSound("hurt.wav");
                 }
                 if (x >= 313 && x <= 363 && y >= 537 && y <= 637) {
                     Hud.soundX = GameModel.WIDTH / 2 - 305;
                     GameModel.soundVolume = volumeConverter.convertFromPercentageToVolume(-64);
-                    Game.playSound("hurt.wav");
+                    music.playSound("hurt.wav");
                 }
                 if (x >= 413 && x <= 463 && y >= 537 && y <= 637) {
                     Hud.soundX = GameModel.WIDTH / 2 - 205;
                     GameModel.soundVolume = volumeConverter.convertFromPercentageToVolume(-56);
-                    Game.playSound("hurt.wav");
+                    music.playSound("hurt.wav");
                 }
                 if (x >= 513 && x <= 563 && y >= 537 && y <= 637) {
                     Hud.soundX = GameModel.WIDTH / 2 - 105;
                     GameModel.soundVolume = volumeConverter.convertFromPercentageToVolume(-48);
-                    Game.playSound("hurt.wav");
+                    music.playSound("hurt.wav");
                 }
                 if (x >= 613 && x <= 663 && y >= 537 && y <= 637) {
                     Hud.soundX = GameModel.WIDTH / 2 - 5;
                     GameModel.soundVolume = volumeConverter.convertFromPercentageToVolume(-40);
-                    Game.playSound("hurt.wav");
+                    music.playSound("hurt.wav");
                 }
                 if (x >= 713 && x <= 763 && y >= 537 && y <= 637) {
                     Hud.soundX = GameModel.WIDTH / 2 + 95;
                     GameModel.soundVolume = volumeConverter.convertFromPercentageToVolume(-32);
-                    Game.playSound("hurt.wav");
+                    music.playSound("hurt.wav");
                 }
                 if (x >= 813 && x <= 863 && y >= 537 && y <= 637) {
                     Hud.soundX = GameModel.WIDTH / 2 + 195;
                     GameModel.soundVolume = volumeConverter.convertFromPercentageToVolume(-24);
-                    Game.playSound("hurt.wav");
+                    music.playSound("hurt.wav");
                 }
                 if (x >= 913 && x <= 963 && y >= 537 && y <= 637) {
                     Hud.soundX = GameModel.WIDTH / 2 + 295;
                     GameModel.soundVolume = volumeConverter.convertFromPercentageToVolume(-16);
-                    Game.playSound("hurt.wav");
+                    music.playSound("hurt.wav");
                 }
                 if (x >= 1013 && x <= 1063 && y >= 537 && y <= 637) {
                     Hud.soundX = GameModel.WIDTH / 2 + 395;
                     GameModel.soundVolume = volumeConverter.convertFromPercentageToVolume(-8);
-                    Game.playSound("hurt.wav");
+                    music.playSound("hurt.wav");
                 }
                 if (x >= 1113 && x <= 1163 && y >= 537 && y <= 637) {
                     Hud.soundX = GameModel.WIDTH / 2 + 495;
                     GameModel.soundVolume = volumeConverter.convertFromPercentageToVolume(0);
-                    Game.playSound("hurt.wav");
+                    music.playSound("hurt.wav");
                 }
                 break;
             default:
