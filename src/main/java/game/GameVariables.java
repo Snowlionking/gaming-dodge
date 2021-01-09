@@ -43,7 +43,7 @@ public class GameVariables {
 
     @Getter
     @Setter
-    public static boolean safeFileRead = false;
+    private static boolean safeFileRead = false;
     @Getter
     @Setter
     private static boolean highscoreSet = false;
