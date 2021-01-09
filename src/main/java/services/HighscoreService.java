@@ -6,36 +6,37 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
-import game.Game;
+import game.GameVariables;
 
 public class HighscoreService {
-	
-	public void safeHighscore(String score) {
-		try {
-			BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("safeFile.txt", true));
-			bufferedWriter.write(score);
-			bufferedWriter.newLine();
-			bufferedWriter.close();
-			Game.gameModel.setHighscoreSet(true);
-		} catch (Exception e) {
-			System.out.println("Error: " + e.getMessage());
-		}
-	}
-	
-	public List<Integer> loadHighscores() {
-		List<Integer> highscores = new ArrayList<>();
-		try {
-			BufferedReader bufferedReader = new BufferedReader(new FileReader("safeFile.txt"));
-			String line = null;
-			while((line = bufferedReader.readLine()) != null) {
-				highscores.add(Integer.parseInt(line));
-			}
-			bufferedReader.close();
-		} catch (Exception e) {
-			System.out.println("Error: " + e.getMessage());
-		}
-		return highscores;
-	}
+
+    private Logger logger = Logger.getLogger(HighscoreService.class.getName());
+
+    public void safeHighscore(String score) {
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("safeFile.txt", true))) {
+            bufferedWriter.write(score);
+            bufferedWriter.newLine();
+            bufferedWriter.close();
+            GameVariables.highscoreSet = true;
+        } catch (Exception e) {
+            logger.severe("Error: " + e.getMessage());
+        }
+    }
+
+    public List<Integer> loadHighscores() {
+        List<Integer> highscores = new ArrayList<>();
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("safeFile.txt"))) {
+            String line = null;
+            while ((line = bufferedReader.readLine()) != null) {
+                highscores.add(Integer.parseInt(line));
+            }
+            bufferedReader.close();
+        } catch (Exception e) {
+            logger.severe("Error: " + e.getMessage());
+        }
+        return highscores;
+    }
 
 }

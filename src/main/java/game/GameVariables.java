@@ -7,31 +7,27 @@ import javax.sound.sampled.LineUnavailableException;
 import lombok.Data;
 
 @Data
-public class GameModel {
+public class GameVariables {
 
     public static final int WIDTH = 1280;
-
     public static final int HEIGHT = WIDTH / 12 * 9;
 
     public static long soundVolume = 0;
-
     public static long musicVolume = 0;
 
-    private boolean highscoreSet;
+    public static GameState state = GameState.MENU;
 
-    private GameState state;
+    public static int level = 1;
 
-    private int level;
+    public static boolean highscoreSet = false;
+    public static boolean running = false;
+    public static boolean musicRunning = false;
 
-    private boolean running;
+    public static Clip clip;
 
-    private boolean musicRunning;
-
-    private Clip clip;
-
-    public GameModel() {
+    static {
         try {
-            setClip(AudioSystem.getClip());
+            clip = AudioSystem.getClip();
         } catch (LineUnavailableException e) {
             e.printStackTrace();
         }

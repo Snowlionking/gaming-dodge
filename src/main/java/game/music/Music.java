@@ -9,14 +9,12 @@ import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-import game.Game;
-import game.GameModel;
+import game.GameVariables;
 
 public class Music {
 
     public void playSound(String musicPath) {
         try {
-
             Clip sound = AudioSystem.getClip();
 
             AudioInputStream audioIn =
@@ -24,7 +22,7 @@ public class Music {
 
             sound.open(audioIn);
             FloatControl volume = (FloatControl) sound.getControl(FloatControl.Type.MASTER_GAIN);
-            volume.setValue(GameModel.soundVolume);
+            volume.setValue(GameVariables.soundVolume);
             sound.start();
 
         } catch (UnsupportedAudioFileException e) {
@@ -38,20 +36,18 @@ public class Music {
 
     public void startMusic(String musicPath) {
         try {
-
-            if (Game.gameModel.getClip().isOpen()) {
-                Game.gameModel.getClip().close();
+            if (GameVariables.clip.isOpen()) {
+                GameVariables.clip.close();
             }
-
             AudioInputStream audioIn =
                 AudioSystem.getAudioInputStream(getClass().getClassLoader().getResourceAsStream("music\\" + musicPath));
 
-            Game.gameModel.getClip().open(audioIn);
-            FloatControl volume = (FloatControl) Game.gameModel.getClip().getControl(FloatControl.Type.MASTER_GAIN);
-            volume.setValue(GameModel.musicVolume);
-            Game.gameModel.getClip().loop(Clip.LOOP_CONTINUOUSLY);
-            Game.gameModel.getClip().start();
-            Game.gameModel.setMusicRunning(true);
+            GameVariables.clip.open(audioIn);
+            FloatControl volume = (FloatControl) GameVariables.clip.getControl(FloatControl.Type.MASTER_GAIN);
+            volume.setValue(GameVariables.musicVolume);
+            GameVariables.clip.loop(Clip.LOOP_CONTINUOUSLY);
+            GameVariables.clip.start();
+            GameVariables.musicRunning = true;
 
         } catch (UnsupportedAudioFileException e) {
             e.printStackTrace();

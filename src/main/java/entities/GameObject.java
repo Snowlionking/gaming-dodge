@@ -5,64 +5,64 @@ import java.awt.Rectangle;
 
 public abstract class GameObject {
 
-	protected int x;
-	protected int y;
+    protected int x;
+    protected int y;
 
-	protected int velX;
-	protected int velY;
+    protected int velX;
+    protected int velY;
 
-	protected Id id;
+    protected Id id;
 
-	public GameObject(int x, int y, Id id) {
-		this.x = x;
-		this.y = y;
-		this.id = id;
-	}
+    protected GameObject(int x, int y, Id id) {
+        this.x = x;
+        this.y = y;
+        this.id = id;
+    }
 
-	public abstract void tick();
+    public abstract void tick();
 
-	public abstract void render(Graphics g);
-	
-	public abstract Rectangle getBounds();
+    public abstract void render(Graphics g);
 
-	public int getX() {
-		return x;
-	}
+    public abstract Rectangle getBounds();
 
-	public void setX(int x) {
-		this.x = x;
-	}
+    public int getX() {
+        return x;
+    }
 
-	public int getY() {
-		return y;
-	}
+    public void setX(int x) {
+        this.x = x;
+    }
 
-	public void setY(int y) {
-		this.y = y;
-	}
+    public int getY() {
+        return y;
+    }
 
-	public int getVelX() {
-		return velX;
-	}
+    public void setY(int y) {
+        this.y = y;
+    }
 
-	public void setVelX(int velX) {
-		this.velX = velX;
-	}
+    public int getVelX() {
+        return velX;
+    }
 
-	public int getVelY() {
-		return velY;
-	}
+    public void setVelX(int velX) {
+        this.velX = velX;
+    }
 
-	public void setVelY(int velY) {
-		this.velY = velY;
-	}
+    public int getVelY() {
+        return velY;
+    }
 
-	public Id getId() {
-		return id;
-	}
+    public void setVelY(int velY) {
+        this.velY = velY;
+    }
 
-	public void setId(Id id) {
-		this.id = id;
-	}
+    public Id getId() {
+        return id;
+    }
+
+    public void setId(Id id) {
+        this.id = id;
+    }
 
 }

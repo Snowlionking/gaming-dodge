@@ -6,7 +6,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 import entities.Id;
-import game.GameModel;
+import game.GameVariables;
 import services.InboundService;
 import services.Randomizer;
 
@@ -30,8 +30,8 @@ public class TeleportEnemy extends Enemy {
 		now = System.currentTimeMillis();
 		deltaTime = (int) ((now - lastTime) / 1000);
 		if (deltaTime >= 3) {
-			x = inboundService.clamp(randomizer.randomNumber(GameModel.WIDTH), 32, GameModel.WIDTH);
-			y = inboundService.clamp(randomizer.randomNumber(GameModel.HEIGHT), 32, GameModel.HEIGHT);
+			x = inboundService.clamp(randomizer.randomNumber(GameVariables.WIDTH), 32, GameVariables.WIDTH);
+			y = inboundService.clamp(randomizer.randomNumber(GameVariables.HEIGHT), 32, GameVariables.HEIGHT);
 			lastTime = now;
 		}
 	}

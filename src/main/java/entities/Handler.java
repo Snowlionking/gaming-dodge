@@ -11,15 +11,11 @@ import entities.powerups.PowerUp;
 public class Handler {
 
     private LinkedList<Enemy> enemyList = new LinkedList<Enemy>();
-
     private LinkedList<PowerUp> powerUpList = new LinkedList<PowerUp>();
 
     private Player player;
-
     private Point point;
-
     private TrackEnemy trackEnemy;
-
     private TeleportEnemy teleportEnemy;
 
     public void tick() {

@@ -1,6 +1,6 @@
 package services;
 
-import game.GameModel;
+import game.GameVariables;
 
 public class InboundService {
 
@@ -15,14 +15,14 @@ public class InboundService {
 	}
 	
 	public int keepInboundOnXAxe(int position) {
-		if (position <= 0 || position >= GameModel.WIDTH - 32) {
+		if (position <= 0 || position >= GameVariables.WIDTH - 32) {
 			return -1;
 		}
 		return 1;
 	}
 	
 	public int keepInboundOnYAxe(int position) {
-		if (position <= 0 || position >= GameModel.HEIGHT - 48) {
+		if (position <= 0 || position >= GameVariables.HEIGHT - 48) {
 			return -1;
 		}
 		return 1;
