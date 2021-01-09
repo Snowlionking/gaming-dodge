@@ -46,7 +46,7 @@ public class GameLoop {
 
         initializeSpawns(handler);
 
-        while (GameVariables.running) {
+        while (GameVariables.isRunning()) {
             long now = System.nanoTime();
             delta += (now - lastTime) / ns;
             lastTime = now;
@@ -74,9 +74,9 @@ public class GameLoop {
         Graphics g = bs.getDrawGraphics();
 
         g.setColor(Color.black);
-        g.fillRect(0, 0, GameVariables.WIDTH, GameVariables.HEIGHT);
+        g.fillRect(0, 0, GameVariables.getWIDTH(), GameVariables.getHEIGHT());
 
-        if (GameVariables.state == GameState.PLAYING) {
+        if (GameVariables.getState() == GameState.PLAYING) {
             handler.render(g);
         }
 
@@ -87,34 +87,34 @@ public class GameLoop {
     }
 
     private void tick(Handler handler) {
-        switch (GameVariables.state) {
+        switch (GameVariables.getState()) {
             case PLAYING:
-                if (!GameVariables.musicRunning) {
+                if (!GameVariables.isMusicRunning()) {
                     music.startMusic(MUSIC_PLAYING);
                 }
-                if (GameVariables.highscoreSet) {
-                    GameVariables.highscoreSet = false;
+                if (GameVariables.isHighscoreSet()) {
+                    GameVariables.setHighscoreSet(false);
                 }
-                GameVariables.level = Hud.SCORE / 100 + 1;
+                GameVariables.setLevel(Hud.SCORE / 100 + 1);
                 handler.tick();
                 break;
             case MENU:
-                if (!GameVariables.musicRunning) {
+                if (!GameVariables.isMusicRunning()) {
                     music.startMusic(MUSIC_PLAYING);
                 }
                 break;
             case GAMEOVER:
-                if (!GameVariables.musicRunning) {
+                if (!GameVariables.isMusicRunning()) {
                     music.startMusic(MUSIC_GAMEOVER);
                 }
                 break;
             case HIGHSCORES:
-                if (!GameVariables.musicRunning) {
+                if (!GameVariables.isMusicRunning()) {
                     music.startMusic(MUSIC_HIGHSCORES);
                 }
                 break;
             case SETTINGS:
-                if (!GameVariables.musicRunning) {
+                if (!GameVariables.isMusicRunning()) {
                     music.startMusic(MUSIC_PLAYING);
                 }
                 break;
@@ -125,15 +125,15 @@ public class GameLoop {
         hud.tick();
 
         if (Hud.HEALTH <= 0) {
-            if (!GameVariables.highscoreSet) {
+            if (!GameVariables.isHighscoreSet()) {
                 highscoreService.safeHighscore(Integer.toString(Hud.SCORE));
                 handler.resetAllEntities();
             }
             handler.getPlayer().setVelX(0);
             handler.getPlayer().setVelY(0);
             Hud.HEALTH = 100;
-            GameVariables.state = GameState.GAMEOVER;
-            GameVariables.musicRunning = false;
+            GameVariables.setState(GameState.GAMEOVER);
+            GameVariables.setMusicRunning(false);
         }
     }
 

@@ -4,25 +4,43 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
 public class GameVariables {
 
-    public static final int WIDTH = 1280;
-    public static final int HEIGHT = WIDTH / 12 * 9;
+    @Getter
+    private static final int WIDTH = 1280;
+    @Getter
+    private static final int HEIGHT = WIDTH / 12 * 9;
 
-    public static long soundVolume = 0;
-    public static long musicVolume = 0;
+    @Getter
+    @Setter
+    private static long soundVolume = 0;
+    @Getter
+    @Setter
+    private static long musicVolume = 0;
 
-    public static GameState state = GameState.MENU;
+    @Getter
+    @Setter
+    private static GameState state = GameState.MENU;
 
-    public static int level = 1;
+    @Getter
+    @Setter
+    private static int level = 1;
 
-    public static boolean highscoreSet = false;
-    public static boolean running = false;
-    public static boolean musicRunning = false;
+    @Getter
+    @Setter
+    private static boolean highscoreSet = false;
+    @Getter
+    @Setter
+    private static boolean running = false;
+    @Getter
+    @Setter
+    private static boolean musicRunning = false;
 
+    @Getter
+    @Setter
     public static Clip clip;
 
     static {

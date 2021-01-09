@@ -11,7 +11,7 @@ public class Game extends Canvas implements Runnable {
     private transient Thread thread;
 
     public Game() {
-        new Window(GameVariables.WIDTH, GameVariables.HEIGHT, "Dodge-City", this);
+        new Window(GameVariables.getWIDTH(), GameVariables.getHEIGHT(), "Dodge-City", this);
     }
 
     public static void main(String[] args) {
@@ -25,13 +25,13 @@ public class Game extends Canvas implements Runnable {
     public synchronized void start() {
         thread = new Thread(this);
         thread.start();
-        GameVariables.running = true;
+        GameVariables.setRunning(true);
     }
 
     public synchronized void stop() {
         try {
             thread.join();
-            GameVariables.running = false;
+            GameVariables.setRunning(false);
         } catch (Exception e) {
             e.printStackTrace();
         }

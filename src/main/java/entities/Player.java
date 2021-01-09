@@ -32,8 +32,8 @@ public class Player extends GameObject {
         x += velX;
         y += velY;
 
-        x = inboundService.clamp(x, 1, GameVariables.WIDTH - 49);
-        y = inboundService.clamp(y, 1, GameVariables.HEIGHT - 72);
+        x = inboundService.clamp(x, 1, GameVariables.getWIDTH() - 49);
+        y = inboundService.clamp(y, 1, GameVariables.getHEIGHT() - 72);
 
         collisionCheck();
     }
@@ -65,13 +65,13 @@ public class Player extends GameObject {
     }
 
     private void checkForTrackingAndTeleportEnemyCollision() {
-        if (GameVariables.level >= 3) {
+        if (GameVariables.getLevel() >= 3) {
             if (doesPlayerCollideWithEntity(handler.getTrackEnemy())) {
                 Hud.HEALTH -= handler.getTrackEnemy().getDamage();
                 spawner.spawnTrackEnemy(handler, this);
             }
 
-            if (GameVariables.level >= 4 && doesPlayerCollideWithEntity(handler.getTeleportEnemy())) {
+            if (GameVariables.getLevel() >= 4 && doesPlayerCollideWithEntity(handler.getTeleportEnemy())) {
                 Hud.HEALTH -= handler.getTeleportEnemy().getDamage();
                 spawner.spawnTeleportEnemy(handler);
             }
@@ -84,7 +84,7 @@ public class Player extends GameObject {
             music.playSound("pop.wav");
             Hud.SCORE += handler.getPoint().getPoints();
             Hud.HEALTH += handler.getPoint().getRegeneration();
-            switch (GameVariables.level) {
+            switch (GameVariables.getLevel()) {
                 case 1:
                     spawner.spawnBasicEnemy(handler);
                     break;

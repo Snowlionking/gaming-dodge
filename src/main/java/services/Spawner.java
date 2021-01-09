@@ -16,39 +16,41 @@ import game.GameVariables;
 
 public class Spawner {
 
-	private Random r = new Random();
+    private Random r = new Random();
 
-	public void spawnBasicEnemy(Handler handler) {
-		handler.addEnemy(
-				new BasicEnemy(r.nextInt(GameVariables.WIDTH - 120), r.nextInt(GameVariables.HEIGHT - 120), Id.BASIC_ENEMY));
-	}
+    public void spawnBasicEnemy(Handler handler) {
+        handler.addEnemy(new BasicEnemy(r.nextInt(GameVariables.getWIDTH() - 120),
+            r.nextInt(GameVariables.getHEIGHT() - 120), Id.BASIC_ENEMY));
+    }
 
-	public void spawnFastEnemy(Handler handler) {
-		handler.addEnemy(
-				new FastEnemy(r.nextInt(GameVariables.WIDTH - 120), r.nextInt(GameVariables.HEIGHT - 120), Id.FAST_ENEMY));
-	}
+    public void spawnFastEnemy(Handler handler) {
+        handler.addEnemy(new FastEnemy(r.nextInt(GameVariables.getWIDTH() - 120),
+            r.nextInt(GameVariables.getHEIGHT() - 120), Id.FAST_ENEMY));
+    }
 
-	public void spawnTrackEnemy(Handler handler, Player player) {
-		handler.setTrackEnemy(new TrackEnemy(r.nextInt(GameVariables.WIDTH - 120), r.nextInt(GameVariables.HEIGHT - 120),
-				Id.TRACK_ENEMY, player));
-	}
+    public void spawnTrackEnemy(Handler handler, Player player) {
+        handler.setTrackEnemy(new TrackEnemy(r.nextInt(GameVariables.getWIDTH() - 120),
+            r.nextInt(GameVariables.getHEIGHT() - 120), Id.TRACK_ENEMY, player));
+    }
 
-	public void spawnTeleportEnemy(Handler handler) {
-		handler.setTeleportEnemy(
-				new TeleportEnemy(r.nextInt(GameVariables.WIDTH - 120), r.nextInt(GameVariables.HEIGHT - 120), Id.TRACK_ENEMY));
-	}
+    public void spawnTeleportEnemy(Handler handler) {
+        handler.setTeleportEnemy(new TeleportEnemy(r.nextInt(GameVariables.getWIDTH() - 120),
+            r.nextInt(GameVariables.getHEIGHT() - 120), Id.TRACK_ENEMY));
+    }
 
-	public void spawnPoint(Handler handler) {
-		handler.setPoint(new Point(r.nextInt(GameVariables.WIDTH - 120), r.nextInt(GameVariables.HEIGHT - 120), Id.POINT));
-	}
+    public void spawnPoint(Handler handler) {
+        handler.setPoint(
+            new Point(r.nextInt(GameVariables.getWIDTH() - 120), r.nextInt(GameVariables.getHEIGHT() - 120), Id.POINT));
+    }
 
-	public void spawnPlayer(Handler handler) {
-		handler.setPlayer(new Player(GameVariables.WIDTH / 2 - 32, GameVariables.HEIGHT / 2 - 32, Id.PLAYER, handler));
-	}
+    public void spawnPlayer(Handler handler) {
+        handler.setPlayer(
+            new Player(GameVariables.getWIDTH() / 2 - 32, GameVariables.getHEIGHT() / 2 - 32, Id.PLAYER, handler));
+    }
 
-	public void spawnPowerUp(Handler handler) {
-		handler.addPowerUp(new PowerUp(r.nextInt(GameVariables.WIDTH - 120), r.nextInt(GameVariables.HEIGHT - 120), Id.POWERUP,
-				PowerUps.INVINCIBLE));
-	}
+    public void spawnPowerUp(Handler handler) {
+        handler.addPowerUp(new PowerUp(r.nextInt(GameVariables.getWIDTH() - 120),
+            r.nextInt(GameVariables.getHEIGHT() - 120), Id.POWERUP, PowerUps.INVINCIBLE));
+    }
 
 }

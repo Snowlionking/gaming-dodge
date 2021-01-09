@@ -19,7 +19,7 @@ public class HighscoreService {
             bufferedWriter.write(score);
             bufferedWriter.newLine();
             bufferedWriter.close();
-            GameVariables.highscoreSet = true;
+            GameVariables.setHighscoreSet(true);
         } catch (Exception e) {
             logger.severe("Error: " + e.getMessage());
         }

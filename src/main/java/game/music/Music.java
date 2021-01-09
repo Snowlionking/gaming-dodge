@@ -22,7 +22,7 @@ public class Music {
 
             sound.open(audioIn);
             FloatControl volume = (FloatControl) sound.getControl(FloatControl.Type.MASTER_GAIN);
-            volume.setValue(GameVariables.soundVolume);
+            volume.setValue(GameVariables.getSoundVolume());
             sound.start();
 
         } catch (UnsupportedAudioFileException e) {
@@ -44,10 +44,10 @@ public class Music {
 
             GameVariables.clip.open(audioIn);
             FloatControl volume = (FloatControl) GameVariables.clip.getControl(FloatControl.Type.MASTER_GAIN);
-            volume.setValue(GameVariables.musicVolume);
+            volume.setValue(GameVariables.getMusicVolume());
             GameVariables.clip.loop(Clip.LOOP_CONTINUOUSLY);
             GameVariables.clip.start();
-            GameVariables.musicRunning = true;
+            GameVariables.setMusicRunning(true);
 
         } catch (UnsupportedAudioFileException e) {
             e.printStackTrace();
