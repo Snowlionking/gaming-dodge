@@ -22,7 +22,7 @@ public class Hud {
     private HighscoreService highscoreService = new HighscoreService();
 
     public void tick() {
-        GameVariables.setHEALTH(inboundService.clamp(GameVariables.getHEALTH(), 0, 100));
+        GameVariables.setHealth(inboundService.clamp(GameVariables.getHealth(), 0, 100));
     }
 
     public void render(Graphics g) {
@@ -31,14 +31,14 @@ public class Hud {
                 g.setColor(Color.gray);
                 g.fillRect(1, 1, 100, 24);
                 g.setColor(Color.green);
-                g.fillRect(1, 1, GameVariables.getHEALTH(), 24);
+                g.fillRect(1, 1, GameVariables.getHealth(), 24);
                 g.setColor(Color.white);
                 g.drawRect(1, 1, 100, 24);
                 g.setColor(Color.white);
                 g.setFont(new Font("Book Antiqua", Font.PLAIN, 18));
-                g.drawString("Health: " + Integer.toString(GameVariables.getHEALTH()), 2, 44);
+                g.drawString("Health: " + Integer.toString(GameVariables.getHealth()), 2, 44);
                 g.drawString("Level: " + Integer.toString(GameVariables.getLevel()), 2, 84);
-                g.drawString("Score: " + Integer.toString(GameVariables.getSCORE()), 2, 64);
+                g.drawString("Score: " + Integer.toString(GameVariables.getScore()), 2, 64);
                 break;
             case MENU:
                 g.setColor(Color.white);
@@ -58,7 +58,7 @@ public class Hud {
                 g.setColor(Color.white);
                 g.setFont(new Font(TIMES_ROMAN, Font.PLAIN, 24));
                 g.drawString("YOU DIED!", GameVariables.getWIDTH() / 2 - 115, GameVariables.getHEIGHT() / 2);
-                g.drawString("SCORE: " + Integer.toString(GameVariables.getSCORE()), GameVariables.getWIDTH() / 2 - 115,
+                g.drawString("SCORE: " + Integer.toString(GameVariables.getScore()), GameVariables.getWIDTH() / 2 - 115,
                     GameVariables.getHEIGHT() / 2 + 128);
                 g.drawString("PRESS ANYWHERE TO GO BACK TO MENU", GameVariables.getWIDTH() / 2 - 256,
                     GameVariables.getHEIGHT() / 2 + 256);

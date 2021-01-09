@@ -49,8 +49,8 @@ public class MouseInput extends MouseAdapter {
                 }
                 break;
             case GAMEOVER:
-                GameVariables.setSCORE(0);
-                GameVariables.setHEALTH(100);
+                GameVariables.setScore(0);
+                GameVariables.setHealth(100);
                 GameVariables.setState(GameState.MENU);
                 GameVariables.setMusicRunning(false);
                 break;

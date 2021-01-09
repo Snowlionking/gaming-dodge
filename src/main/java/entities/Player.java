@@ -57,7 +57,7 @@ public class Player extends GameObject {
             Enemy enemy = enemyIterator.next();
             if (doesPlayerCollideWithEntity(enemy)) {
                 music.playSound("hurt.wav");
-                GameVariables.setHEALTH(GameVariables.getHEALTH() - enemy.getDamage());
+                GameVariables.setHealth(GameVariables.getHealth() - enemy.getDamage());
                 enemyIterator.remove();
             }
         }
@@ -66,12 +66,12 @@ public class Player extends GameObject {
     private void checkForTrackingAndTeleportEnemyCollision() {
         if (GameVariables.getLevel() >= 3) {
             if (doesPlayerCollideWithEntity(handler.getTrackEnemy())) {
-                GameVariables.setHEALTH(GameVariables.getHEALTH() - handler.getTrackEnemy().getDamage());
+                GameVariables.setHealth(GameVariables.getHealth() - handler.getTrackEnemy().getDamage());
                 spawner.spawnTrackEnemy(handler, this);
             }
 
             if (GameVariables.getLevel() >= 4 && doesPlayerCollideWithEntity(handler.getTeleportEnemy())) {
-                GameVariables.setHEALTH(GameVariables.getHEALTH() - handler.getTeleportEnemy().getDamage());
+                GameVariables.setHealth(GameVariables.getHealth() - handler.getTeleportEnemy().getDamage());
                 spawner.spawnTeleportEnemy(handler);
             }
 
@@ -81,8 +81,8 @@ public class Player extends GameObject {
     private void checkForPointCollision() {
         if (doesPlayerCollideWithEntity(handler.getPoint())) {
             music.playSound("pop.wav");
-            GameVariables.setSCORE(GameVariables.getSCORE() + handler.getPoint().getPoints());
-            GameVariables.setHEALTH(GameVariables.getHEALTH() + handler.getPoint().getRegeneration());
+            GameVariables.setScore(GameVariables.getScore() + handler.getPoint().getPoints());
+            GameVariables.setHealth(GameVariables.getHealth() + handler.getPoint().getRegeneration());
             switch (GameVariables.getLevel()) {
                 case 1:
                     spawner.spawnBasicEnemy(handler);

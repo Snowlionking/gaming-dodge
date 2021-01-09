@@ -30,16 +30,16 @@ public class GameVariables {
     private static int level = 1;
     @Getter
     @Setter
-    public static int HEALTH = 100;
+    private static int health = 100;
     @Getter
     @Setter
-    public static int SCORE = 0;
+    private static int score = 0;
     @Getter
     @Setter
-    public static int volumeX = GameVariables.getWIDTH() / 2 + 495;
+    private static int volumeX = GameVariables.getWIDTH() / 2 + 495;
     @Getter
     @Setter
-    public static int soundX = GameVariables.getWIDTH() / 2 + 495;
+    private static int soundX = GameVariables.getWIDTH() / 2 + 495;
 
     @Getter
     @Setter
