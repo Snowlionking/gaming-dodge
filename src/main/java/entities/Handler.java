@@ -2,6 +2,7 @@ package entities;
 
 import java.awt.Graphics;
 import java.util.LinkedList;
+import java.util.List;
 
 import entities.enemies.Enemy;
 import entities.enemies.TeleportEnemy;
@@ -10,8 +11,8 @@ import entities.powerups.PowerUp;
 
 public class Handler {
 
-    private LinkedList<Enemy> enemyList = new LinkedList<Enemy>();
-    private LinkedList<PowerUp> powerUpList = new LinkedList<PowerUp>();
+    private LinkedList<Enemy> enemyList = new LinkedList<>();
+    private LinkedList<PowerUp> powerUpList = new LinkedList<>();
 
     private Player player;
     private Point point;
@@ -54,7 +55,7 @@ public class Handler {
     }
 
     public void resetAllEntities() {
-        enemyList = new LinkedList<Enemy>();
+        enemyList = new LinkedList<>();
         trackEnemy = null;
         teleportEnemy = null;
     }
@@ -83,24 +84,24 @@ public class Handler {
         this.point = point;
     }
 
-    public LinkedList<Enemy> getEnemyList() {
+    public List<Enemy> getEnemyList() {
         return enemyList;
     }
 
-    public void setEnemyList(LinkedList<Enemy> enemyList) {
-        this.enemyList = enemyList;
+    public void setEnemyList(List<Enemy> enemyList) {
+        this.enemyList = (LinkedList<Enemy>) enemyList;
     }
 
     public void addPowerUp(PowerUp powerUp) {
         this.powerUpList.add(powerUp);
     }
 
-    public LinkedList<PowerUp> getPowerUpList() {
+    public List<PowerUp> getPowerUpList() {
         return powerUpList;
     }
 
-    public void setPowerUpList(LinkedList<PowerUp> powerUpList) {
-        this.powerUpList = powerUpList;
+    public void setPowerUpList(List<PowerUp> powerUpList) {
+        this.powerUpList = (LinkedList<PowerUp>) powerUpList;
     }
 
     public TrackEnemy getTrackEnemy() {

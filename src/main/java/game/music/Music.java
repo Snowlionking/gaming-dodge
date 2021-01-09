@@ -36,17 +36,17 @@ public class Music {
 
     public void startMusic(String musicPath) {
         try {
-            if (GameVariables.clip.isOpen()) {
-                GameVariables.clip.close();
+            if (GameVariables.getClip().isOpen()) {
+                GameVariables.getClip().close();
             }
             AudioInputStream audioIn =
                 AudioSystem.getAudioInputStream(getClass().getClassLoader().getResourceAsStream("music\\" + musicPath));
 
-            GameVariables.clip.open(audioIn);
-            FloatControl volume = (FloatControl) GameVariables.clip.getControl(FloatControl.Type.MASTER_GAIN);
+            GameVariables.getClip().open(audioIn);
+            FloatControl volume = (FloatControl) GameVariables.getClip().getControl(FloatControl.Type.MASTER_GAIN);
             volume.setValue(GameVariables.getMusicVolume());
-            GameVariables.clip.loop(Clip.LOOP_CONTINUOUSLY);
-            GameVariables.clip.start();
+            GameVariables.getClip().loop(Clip.LOOP_CONTINUOUSLY);
+            GameVariables.getClip().start();
             GameVariables.setMusicRunning(true);
 
         } catch (UnsupportedAudioFileException e) {

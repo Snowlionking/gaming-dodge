@@ -15,12 +15,6 @@ import services.InboundService;
 public class Hud {
 
     private static final String TIMES_ROMAN = "TimesRoman";
-    public static int HEALTH = 100;
-    public static int SCORE = 0;
-    public static int volumeX = GameVariables.getWIDTH() / 2 + 495;
-    public static int soundX = GameVariables.getWIDTH() / 2 + 495;
-
-    public static boolean safeFileRead = false;
 
     private List<Integer> highscores = new ArrayList<>();
 
@@ -28,7 +22,7 @@ public class Hud {
     private HighscoreService highscoreService = new HighscoreService();
 
     public void tick() {
-        HEALTH = inboundService.clamp(HEALTH, 0, 100);
+        GameVariables.setHEALTH(inboundService.clamp(GameVariables.getHEALTH(), 0, 100));
     }
 
     public void render(Graphics g) {
@@ -37,14 +31,14 @@ public class Hud {
                 g.setColor(Color.gray);
                 g.fillRect(1, 1, 100, 24);
                 g.setColor(Color.green);
-                g.fillRect(1, 1, HEALTH, 24);
+                g.fillRect(1, 1, GameVariables.getHEALTH(), 24);
                 g.setColor(Color.white);
                 g.drawRect(1, 1, 100, 24);
                 g.setColor(Color.white);
                 g.setFont(new Font("Book Antiqua", Font.PLAIN, 18));
-                g.drawString("Health: " + Integer.toString(HEALTH), 2, 44);
+                g.drawString("Health: " + Integer.toString(GameVariables.getHEALTH()), 2, 44);
                 g.drawString("Level: " + Integer.toString(GameVariables.getLevel()), 2, 84);
-                g.drawString("Score: " + Integer.toString(SCORE), 2, 64);
+                g.drawString("Score: " + Integer.toString(GameVariables.getSCORE()), 2, 64);
                 break;
             case MENU:
                 g.setColor(Color.white);
@@ -64,7 +58,7 @@ public class Hud {
                 g.setColor(Color.white);
                 g.setFont(new Font(TIMES_ROMAN, Font.PLAIN, 24));
                 g.drawString("YOU DIED!", GameVariables.getWIDTH() / 2 - 115, GameVariables.getHEIGHT() / 2);
-                g.drawString("SCORE: " + Integer.toString(SCORE), GameVariables.getWIDTH() / 2 - 115,
+                g.drawString("SCORE: " + Integer.toString(GameVariables.getSCORE()), GameVariables.getWIDTH() / 2 - 115,
                     GameVariables.getHEIGHT() / 2 + 128);
                 g.drawString("PRESS ANYWHERE TO GO BACK TO MENU", GameVariables.getWIDTH() / 2 - 256,
                     GameVariables.getHEIGHT() / 2 + 256);
@@ -75,9 +69,9 @@ public class Hud {
                 g.drawString("BACK", 10, 50);
                 g.drawRect(1, 1, 154, 64);
                 g.drawString("HIGHSCORES", 488, 84);
-                if (!safeFileRead) {
+                if (!GameVariables.isSafeFileRead()) {
                     highscores = highscoreService.loadHighscores();
-                    safeFileRead = true;
+                    GameVariables.setSafeFileRead(true);
                 }
                 g.setFont(new Font(TIMES_ROMAN, Font.PLAIN, 24));
                 highscores = highscores.stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList());
@@ -131,7 +125,7 @@ public class Hud {
                 g.drawString("80", GameVariables.getWIDTH() / 2 + 283, GameVariables.getHEIGHT() / 2 - 140);
                 g.drawString("90", GameVariables.getWIDTH() / 2 + 383, GameVariables.getHEIGHT() / 2 - 140);
                 g.drawString("100", GameVariables.getWIDTH() / 2 + 475, GameVariables.getHEIGHT() / 2 - 140);
-                g.fillRect(volumeX, GameVariables.getHEIGHT() / 2 - 250, 10, 80);
+                g.fillRect(GameVariables.getVolumeX(), GameVariables.getHEIGHT() / 2 - 250, 10, 80);
 
                 g.drawString("ADJUST SOUND VOLUME", GameVariables.getWIDTH() / 2 - 200, GameVariables.getHEIGHT() / 2);
                 g.drawLine(GameVariables.getWIDTH() / 2 - 500, GameVariables.getHEIGHT() / 2 + 100,
@@ -169,7 +163,7 @@ public class Hud {
                 g.drawString("80", GameVariables.getWIDTH() / 2 + 283, GameVariables.getHEIGHT() / 2 + 160);
                 g.drawString("90", GameVariables.getWIDTH() / 2 + 383, GameVariables.getHEIGHT() / 2 + 160);
                 g.drawString("100", GameVariables.getWIDTH() / 2 + 475, GameVariables.getHEIGHT() / 2 + 160);
-                g.fillRect(soundX, GameVariables.getHEIGHT() / 2 + 50, 10, 80);
+                g.fillRect(GameVariables.getSoundX(), GameVariables.getHEIGHT() / 2 + 50, 10, 80);
                 break;
             default:
                 break;

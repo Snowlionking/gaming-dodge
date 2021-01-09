@@ -18,7 +18,6 @@ public class HighscoreService {
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("safeFile.txt", true))) {
             bufferedWriter.write(score);
             bufferedWriter.newLine();
-            bufferedWriter.close();
             GameVariables.setHighscoreSet(true);
         } catch (Exception e) {
             logger.severe("Error: " + e.getMessage());
@@ -32,7 +31,6 @@ public class HighscoreService {
             while ((line = bufferedReader.readLine()) != null) {
                 highscores.add(Integer.parseInt(line));
             }
-            bufferedReader.close();
         } catch (Exception e) {
             logger.severe("Error: " + e.getMessage());
         }

@@ -15,7 +15,6 @@ public class TeleportEnemy extends Enemy {
     private Randomizer randomizer = new Randomizer();
     private InboundService inboundService = new InboundService();
 
-    private long now;
     private long lastTime;
     private int deltaTime;
 
@@ -27,7 +26,7 @@ public class TeleportEnemy extends Enemy {
 
     @Override
     public void tick() {
-        now = System.currentTimeMillis();
+        long now = System.currentTimeMillis();
         deltaTime = (int) ((now - lastTime) / 1000);
         if (deltaTime >= 3) {
             x = inboundService.clamp(randomizer.randomNumber(GameVariables.getWIDTH()), 32, GameVariables.getWIDTH());

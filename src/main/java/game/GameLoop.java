@@ -95,7 +95,7 @@ public class GameLoop {
                 if (GameVariables.isHighscoreSet()) {
                     GameVariables.setHighscoreSet(false);
                 }
-                GameVariables.setLevel(Hud.SCORE / 100 + 1);
+                GameVariables.setLevel(GameVariables.getSCORE() / 100 + 1);
                 handler.tick();
                 break;
             case MENU:
@@ -124,14 +124,14 @@ public class GameLoop {
 
         hud.tick();
 
-        if (Hud.HEALTH <= 0) {
+        if (GameVariables.getHEALTH() <= 0) {
             if (!GameVariables.isHighscoreSet()) {
-                highscoreService.safeHighscore(Integer.toString(Hud.SCORE));
+                highscoreService.safeHighscore(Integer.toString(GameVariables.getSCORE()));
                 handler.resetAllEntities();
             }
             handler.getPlayer().setVelX(0);
             handler.getPlayer().setVelY(0);
-            Hud.HEALTH = 100;
+            GameVariables.setHEALTH(100);
             GameVariables.setState(GameState.GAMEOVER);
             GameVariables.setMusicRunning(false);
         }

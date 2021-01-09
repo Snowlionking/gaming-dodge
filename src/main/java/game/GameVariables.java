@@ -28,7 +28,22 @@ public class GameVariables {
     @Getter
     @Setter
     private static int level = 1;
+    @Getter
+    @Setter
+    public static int HEALTH = 100;
+    @Getter
+    @Setter
+    public static int SCORE = 0;
+    @Getter
+    @Setter
+    public static int volumeX = GameVariables.getWIDTH() / 2 + 495;
+    @Getter
+    @Setter
+    public static int soundX = GameVariables.getWIDTH() / 2 + 495;
 
+    @Getter
+    @Setter
+    public static boolean safeFileRead = false;
     @Getter
     @Setter
     private static boolean highscoreSet = false;
@@ -41,7 +56,7 @@ public class GameVariables {
 
     @Getter
     @Setter
-    public static Clip clip;
+    private static Clip clip;
 
     static {
         try {
@@ -49,6 +64,10 @@ public class GameVariables {
         } catch (LineUnavailableException e) {
             e.printStackTrace();
         }
+    }
+
+    private GameVariables() {
+
     }
 
 }

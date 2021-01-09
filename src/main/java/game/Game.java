@@ -6,7 +6,7 @@ public class Game extends Canvas implements Runnable {
 
     private static final long serialVersionUID = -4584388369897487885L;
 
-    private GameLoop gameLoop = new GameLoop();
+    private transient GameLoop gameLoop = new GameLoop();
 
     private transient Thread thread;
 

@@ -16,7 +16,7 @@ public class KeyInput extends KeyAdapter {
 
     private Handler handler;
 
-    private boolean pressedKeys[] = {false, false, false, false};
+    private boolean[] pressedKeys = {false, false, false, false};
 
     public KeyInput(Handler handler) {
         this.handler = handler;
@@ -48,14 +48,6 @@ public class KeyInput extends KeyAdapter {
                 case KeyEvent.VK_D:
                     handler.getPlayer().setVelX(8);
                     pressedKeys[KEY_D] = true;
-                    break;
-                default:
-                    break;
-            }
-        } else if (GameVariables.getState() == GameState.MENU) {
-            switch (key) {
-                case KeyEvent.VK_P:
-                    GameVariables.setState(GameState.PLAYING);
                     break;
                 default:
                     break;

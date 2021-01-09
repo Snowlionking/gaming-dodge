@@ -7,7 +7,6 @@ import java.util.Iterator;
 
 import entities.enemies.Enemy;
 import game.GameVariables;
-import game.hud.Hud;
 import game.music.Music;
 import services.InboundService;
 import services.Spawner;
@@ -58,7 +57,7 @@ public class Player extends GameObject {
             Enemy enemy = enemyIterator.next();
             if (doesPlayerCollideWithEntity(enemy)) {
                 music.playSound("hurt.wav");
-                Hud.HEALTH -= enemy.getDamage();
+                GameVariables.setHEALTH(GameVariables.getHEALTH() - enemy.getDamage());
                 enemyIterator.remove();
             }
         }
@@ -67,12 +66,12 @@ public class Player extends GameObject {
     private void checkForTrackingAndTeleportEnemyCollision() {
         if (GameVariables.getLevel() >= 3) {
             if (doesPlayerCollideWithEntity(handler.getTrackEnemy())) {
-                Hud.HEALTH -= handler.getTrackEnemy().getDamage();
+                GameVariables.setHEALTH(GameVariables.getHEALTH() - handler.getTrackEnemy().getDamage());
                 spawner.spawnTrackEnemy(handler, this);
             }
 
             if (GameVariables.getLevel() >= 4 && doesPlayerCollideWithEntity(handler.getTeleportEnemy())) {
-                Hud.HEALTH -= handler.getTeleportEnemy().getDamage();
+                GameVariables.setHEALTH(GameVariables.getHEALTH() - handler.getTeleportEnemy().getDamage());
                 spawner.spawnTeleportEnemy(handler);
             }
 
@@ -82,8 +81,8 @@ public class Player extends GameObject {
     private void checkForPointCollision() {
         if (doesPlayerCollideWithEntity(handler.getPoint())) {
             music.playSound("pop.wav");
-            Hud.SCORE += handler.getPoint().getPoints();
-            Hud.HEALTH += handler.getPoint().getRegeneration();
+            GameVariables.setSCORE(GameVariables.getSCORE() + handler.getPoint().getPoints());
+            GameVariables.setHEALTH(GameVariables.getHEALTH() + handler.getPoint().getRegeneration());
             switch (GameVariables.getLevel()) {
                 case 1:
                     spawner.spawnBasicEnemy(handler);
