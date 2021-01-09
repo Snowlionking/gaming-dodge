@@ -1,4 +1,4 @@
-package game.hud;
+package game.window;
 
 import java.awt.Color;
 import java.awt.Font;

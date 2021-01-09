@@ -2,6 +2,8 @@ package game;
 
 import java.awt.Canvas;
 
+import game.window.Window;
+
 public class Game extends Canvas implements Runnable {
 
     private static final long serialVersionUID = -4584388369897487885L;
@@ -10,8 +12,11 @@ public class Game extends Canvas implements Runnable {
 
     private transient Thread thread;
 
+    private transient Window window;
+
     public Game() {
-        new Window(GameVariables.getWIDTH(), GameVariables.getHEIGHT(), "Dodge-City", this);
+        this.window = new Window(GameVariables.getWIDTH(), GameVariables.getHEIGHT(), "Dodge-City", this);
+        start();
     }
 
     public static void main(String[] args) {
@@ -19,7 +24,7 @@ public class Game extends Canvas implements Runnable {
     }
 
     public void run() {
-        gameLoop.loop(this);
+        gameLoop.loop(this, window);
     }
 
     public synchronized void start() {

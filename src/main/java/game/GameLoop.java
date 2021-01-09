@@ -1,14 +1,12 @@
 package game;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.image.BufferStrategy;
-
 import controlls.KeyInput;
 import controlls.MouseInput;
 import entities.Handler;
-import game.hud.Hud;
 import game.music.Music;
+import game.window.Hud;
+import game.window.Menu;
+import game.window.Window;
 import services.HighscoreService;
 import services.Spawner;
 
@@ -22,17 +20,19 @@ public class GameLoop {
 
     private Handler handler;
     private Hud hud;
+    private Menu menu;
     private Music music;
     private Spawner spawner;
 
     public GameLoop() {
         this.handler = new Handler();
         this.hud = new Hud();
+        this.menu = new Menu();
         this.music = new Music();
         this.spawner = new Spawner();
     }
 
-    public void loop(Game game) {
+    public void loop(Game game, Window window) {
 
         game.requestFocus();
         game.addKeyListener(new KeyInput(handler));
@@ -53,7 +53,7 @@ public class GameLoop {
 
             while (delta >= 1) {
                 tick(handler);
-                render(game, handler);
+                render(game, window, handler);
                 delta--;
             }
 
@@ -64,26 +64,36 @@ public class GameLoop {
         game.stop();
     }
 
-    private void render(Game game, Handler handler) {
-        BufferStrategy bs = game.getBufferStrategy();
-        if (bs == null) {
-            game.createBufferStrategy(3);
-            return;
+    private void render(Game game, Window window, Handler handler) {
+
+        switch (GameVariables.getState()) {
+            case MENU:
+                menu.render(window);
+                break;
+
+            default:
+                break;
         }
 
-        Graphics g = bs.getDrawGraphics();
-
-        g.setColor(Color.black);
-        g.fillRect(0, 0, GameVariables.getWIDTH(), GameVariables.getHEIGHT());
-
-        if (GameVariables.getState() == GameState.PLAYING) {
-            handler.render(g);
-        }
-
-        hud.render(g);
-
-        g.dispose();
-        bs.show();
+        // BufferStrategy bs = game.getBufferStrategy();
+        // if (bs == null) {
+        // game.createBufferStrategy(3);
+        // return;
+        // }
+        //
+        // Graphics g = bs.getDrawGraphics();
+        //
+        // g.setColor(Color.black);
+        // g.fillRect(0, 0, GameVariables.getWIDTH(), GameVariables.getHEIGHT());
+        //
+        // if (GameVariables.getState() == GameState.PLAYING) {
+        // handler.render(g);
+        // }
+        //
+        // hud.render(g);
+        //
+        // g.dispose();
+        // bs.show();
     }
 
     private void tick(Handler handler) {

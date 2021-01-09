@@ -1,15 +1,15 @@
-package game;
+package game.window;
 
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
-import java.awt.Canvas;
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
 
-public class Window extends Canvas {
+import game.Game;
 
-    private static final long serialVersionUID = -4369730830015653927L;
+public class Window {
+
     private JFrame frame;
 
     public Window(int width, int height, String title, Game game) {
@@ -21,9 +21,8 @@ public class Window extends Canvas {
         getFrame().setDefaultCloseOperation(EXIT_ON_CLOSE);
         getFrame().setResizable(false);
         getFrame().setLocationRelativeTo(null);
-        getFrame().add(game);
+        // getFrame().add(game);
         getFrame().setVisible(true);
-        game.start();
     }
 
     public JFrame getFrame() {

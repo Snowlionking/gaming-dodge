@@ -24,15 +24,15 @@ public class KeyInput extends KeyAdapter {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        int key = e.getKeyCode();
+        int keyCode = e.getKeyCode();
 
-        if (key == KeyEvent.VK_ESCAPE) {
+        if (keyCode == KeyEvent.VK_ESCAPE) {
             System.exit(1);
         }
 
         if (GameVariables.getState() == GameState.PLAYING) {
 
-            switch (key) {
+            switch (keyCode) {
                 case KeyEvent.VK_W:
                     handler.getPlayer().setVelY(-8);
                     pressedKeys[KEY_W] = true;
@@ -63,40 +63,38 @@ public class KeyInput extends KeyAdapter {
             switch (key) {
                 case KeyEvent.VK_W:
                     pressedKeys[KEY_W] = false;
+                    handler.getPlayer().setVelY(0);
                     if (pressedKeys[KEY_S]) {
                         handler.getPlayer().setVelY(8);
-                    } else {
-                        handler.getPlayer().setVelY(0);
                     }
                     break;
                 case KeyEvent.VK_A:
                     pressedKeys[KEY_A] = false;
+                    handler.getPlayer().setVelX(0);
                     if (pressedKeys[KEY_D]) {
                         handler.getPlayer().setVelX(8);
-                    } else {
-                        handler.getPlayer().setVelX(0);
                     }
                     break;
                 case KeyEvent.VK_S:
                     pressedKeys[KEY_S] = false;
+                    handler.getPlayer().setVelY(0);
                     if (pressedKeys[KEY_W]) {
                         handler.getPlayer().setVelY(-8);
-                    } else {
-                        handler.getPlayer().setVelY(0);
                     }
                     break;
                 case KeyEvent.VK_D:
                     pressedKeys[KEY_D] = false;
+                    handler.getPlayer().setVelX(0);
                     if (pressedKeys[KEY_A]) {
                         handler.getPlayer().setVelX(-8);
-                    } else {
-                        handler.getPlayer().setVelX(0);
                     }
                     break;
                 default:
                     break;
             }
-        } else if (GameVariables.getState() == GameState.GAMEOVER) {
+        }
+
+        if (GameVariables.getState() == GameState.GAMEOVER) {
             pressedKeys[KEY_W] = false;
             pressedKeys[KEY_A] = false;
             pressedKeys[KEY_S] = false;
