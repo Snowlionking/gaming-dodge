@@ -1,8 +1,5 @@
 package game.window;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
@@ -39,12 +36,7 @@ public class Menu {
             panel.add(higscoreButton);
 
             JButton exitButton = new JButton("EXIT");
-            exitButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    System.exit(1);
-                }
-            });
+            exitButton.addActionListener(exit -> System.exit(1));
             panel.add(exitButton);
 
             window.getFrame().add(panel);

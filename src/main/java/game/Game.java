@@ -15,7 +15,7 @@ public class Game extends Canvas implements Runnable {
     private transient Window window;
 
     public Game() {
-        this.window = new Window(GameVariables.getWIDTH(), GameVariables.getHEIGHT(), "Dodge-City", this);
+        this.window = new Window(GameVariables.getWIDTH(), GameVariables.getHEIGHT(), "Dodge-City");
         start();
     }
 

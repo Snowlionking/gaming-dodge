@@ -6,13 +6,11 @@ import java.awt.Dimension;
 
 import javax.swing.JFrame;
 
-import game.Game;
-
 public class Window {
 
     private JFrame frame;
 
-    public Window(int width, int height, String title, Game game) {
+    public Window(int width, int height, String title) {
         setFrame(new JFrame(title));
         getFrame().setPreferredSize(new Dimension(width, height));
         getFrame().setMaximumSize(new Dimension(width, height));

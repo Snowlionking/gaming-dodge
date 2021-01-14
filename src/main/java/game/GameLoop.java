@@ -4,6 +4,7 @@ import controlls.KeyInput;
 import controlls.MouseInput;
 import entities.Handler;
 import game.music.Music;
+import game.window.Highscores;
 import game.window.Hud;
 import game.window.Menu;
 import game.window.Settings;
@@ -20,6 +21,7 @@ public class GameLoop {
     private HighscoreService highscoreService = new HighscoreService();
 
     private Handler handler;
+    private Highscores highscores;
     private Hud hud;
     private Menu menu;
     private Music music;
@@ -28,6 +30,7 @@ public class GameLoop {
 
     public GameLoop() {
         this.handler = new Handler();
+        this.highscores = new Highscores();
         this.hud = new Hud();
         this.menu = new Menu();
         this.music = new Music();
@@ -77,6 +80,10 @@ public class GameLoop {
                 break;
             case SETTINGS:
                 settings.render(window, handler);
+                break;
+            case HIGHSCORES:
+                highscores.render(window, handler);
+                break;
             default:
                 break;
         }
