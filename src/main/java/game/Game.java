@@ -24,7 +24,8 @@ public class Game extends Canvas implements Runnable {
     }
 
     public void run() {
-        gameLoop.loop(this, window);
+        gameLoop.loop(window);
+        stop();
     }
 
     public synchronized void start() {

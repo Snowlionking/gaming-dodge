@@ -6,6 +6,7 @@ import entities.Handler;
 import game.music.Music;
 import game.window.Hud;
 import game.window.Menu;
+import game.window.Settings;
 import game.window.Window;
 import services.HighscoreService;
 import services.Spawner;
@@ -22,6 +23,7 @@ public class GameLoop {
     private Hud hud;
     private Menu menu;
     private Music music;
+    private Settings settings;
     private Spawner spawner;
 
     public GameLoop() {
@@ -29,14 +31,15 @@ public class GameLoop {
         this.hud = new Hud();
         this.menu = new Menu();
         this.music = new Music();
+        this.settings = new Settings();
         this.spawner = new Spawner();
     }
 
-    public void loop(Game game, Window window) {
+    public void loop(Window window) {
 
-        game.requestFocus();
-        game.addKeyListener(new KeyInput(handler));
-        game.addMouseListener(new MouseInput());
+        window.getFrame().requestFocus();
+        window.getFrame().addKeyListener(new KeyInput(handler));
+        window.getFrame().addMouseListener(new MouseInput());
 
         long lastTime = System.nanoTime();
         double amountOfTicks = 60.0;
@@ -53,7 +56,7 @@ public class GameLoop {
 
             while (delta >= 1) {
                 tick(handler);
-                render(game, window, handler);
+                render(window, handler);
                 delta--;
             }
 
@@ -61,39 +64,22 @@ public class GameLoop {
                 timer += 1000;
             }
         }
-        game.stop();
     }
 
-    private void render(Game game, Window window, Handler handler) {
+    private void render(Window window, Handler handler) {
 
         switch (GameVariables.getState()) {
             case MENU:
-                menu.render(window);
+                menu.render(window, handler);
                 break;
-
+            case PLAYING:
+                hud.render(window, handler);
+                break;
+            case SETTINGS:
+                settings.render(window, handler);
             default:
                 break;
         }
-
-        // BufferStrategy bs = game.getBufferStrategy();
-        // if (bs == null) {
-        // game.createBufferStrategy(3);
-        // return;
-        // }
-        //
-        // Graphics g = bs.getDrawGraphics();
-        //
-        // g.setColor(Color.black);
-        // g.fillRect(0, 0, GameVariables.getWIDTH(), GameVariables.getHEIGHT());
-        //
-        // if (GameVariables.getState() == GameState.PLAYING) {
-        // handler.render(g);
-        // }
-        //
-        // hud.render(g);
-        //
-        // g.dispose();
-        // bs.show();
     }
 
     private void tick(Handler handler) {

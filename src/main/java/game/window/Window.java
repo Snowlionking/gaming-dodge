@@ -21,7 +21,6 @@ public class Window {
         getFrame().setDefaultCloseOperation(EXIT_ON_CLOSE);
         getFrame().setResizable(false);
         getFrame().setLocationRelativeTo(null);
-        // getFrame().add(game);
         getFrame().setVisible(true);
     }
 
