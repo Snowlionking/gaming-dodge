@@ -11,6 +11,7 @@ import controlls.KeyInput;
 import controlls.MouseInput;
 import entities.Handler;
 import game.GameState;
+import game.GameVariables;
 import services.listeners.MenuButtonListener;
 import services.listeners.MusicSliderListener;
 import services.listeners.SoundSliderListener;
@@ -19,16 +20,15 @@ public class Settings {
 
     private static final int MIN_SOUND_VALUE = -80;
     private static final int MAX_SOUND_VALUE = 0;
-    private boolean cleared = false;
 
     public void render(Window window, Handler handler) {
 
-        if (!cleared) {
+        if (!GameVariables.isWindowCleared()) {
             window.getFrame().getContentPane().removeAll();
             window.getFrame().requestFocus();
             window.getFrame().addKeyListener(new KeyInput(handler));
             window.getFrame().addMouseListener(new MouseInput());
-            cleared = true;
+            GameVariables.setWindowCleared(true);
 
             JPanel panel = new JPanel();
 
@@ -36,7 +36,7 @@ public class Settings {
             backButton.addActionListener(new MenuButtonListener(GameState.MENU));
 
             JLabel musicLabel = new JLabel("MUSIC VOLUME");
-            JSlider musicSlider = new JSlider(MIN_SOUND_VALUE, MAX_SOUND_VALUE);
+            JSlider musicSlider = new JSlider(MIN_SOUND_VALUE, MAX_SOUND_VALUE, (int) GameVariables.getMusicVolume());
             musicSlider.addChangeListener(new MusicSliderListener());
             musicSlider.setMajorTickSpacing(10);
             musicSlider.setPaintTicks(true);
@@ -52,7 +52,7 @@ public class Settings {
             musicSlider.setLabelTable(musicHashtable);
 
             JLabel soundLabel = new JLabel("SOUND VOLUME");
-            JSlider soundSlider = new JSlider(MIN_SOUND_VALUE, MAX_SOUND_VALUE);
+            JSlider soundSlider = new JSlider(MIN_SOUND_VALUE, MAX_SOUND_VALUE, (int) GameVariables.getSoundVolume());
             soundSlider.addChangeListener(new SoundSliderListener());
             soundSlider.setMajorTickSpacing(10);
             soundSlider.setPaintTicks(true);

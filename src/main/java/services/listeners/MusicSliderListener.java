@@ -14,6 +14,7 @@ public class MusicSliderListener implements ChangeListener {
         JSlider slider = (JSlider) changeEvent.getSource();
         FloatControl volume = (FloatControl) GameVariables.getClip().getControl(FloatControl.Type.MASTER_GAIN);
         volume.setValue(slider.getValue());
+        GameVariables.setMusicVolume((long) volume.getValue());
     }
 
 }

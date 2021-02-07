@@ -10,12 +10,13 @@ import controlls.MouseInput;
 import entities.Handler;
 import game.GameVariables;
 import services.InboundService;
+import services.Spawner;
 
 public class Hud {
 
     private InboundService inboundService = new InboundService();
 
-    private boolean cleared = false;
+    private Spawner spawner = new Spawner();
 
     public void tick() {
         GameVariables.setHealth(inboundService.clamp(GameVariables.getHealth(), 0, 100));
@@ -23,12 +24,15 @@ public class Hud {
 
     public void render(Window window, Handler handler) {
 
-        if (!cleared) {
+        if (!GameVariables.isWindowCleared()) {
             window.getFrame().getContentPane().removeAll();
             window.getFrame().requestFocus();
             window.getFrame().addKeyListener(new KeyInput(handler));
             window.getFrame().addMouseListener(new MouseInput());
-            cleared = true;
+
+            initializeSpawns(handler);
+
+            GameVariables.setWindowCleared(true);
         }
 
         BufferStrategy bs = window.getFrame().getBufferStrategy();
@@ -58,5 +62,10 @@ public class Hud {
         g.dispose();
         bs.show();
 
+    }
+
+    private void initializeSpawns(Handler handler) {
+        spawner.spawnPlayer(handler);
+        spawner.spawnPoint(handler);
     }
 }

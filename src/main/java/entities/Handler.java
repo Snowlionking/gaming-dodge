@@ -2,13 +2,14 @@ package entities;
 
 import java.awt.Graphics;
 import java.util.LinkedList;
-import java.util.List;
 
 import entities.enemies.Enemy;
 import entities.enemies.TeleportEnemy;
 import entities.enemies.TrackEnemy;
 import entities.powerups.PowerUp;
+import lombok.Data;
 
+@Data
 public class Handler {
 
     private LinkedList<Enemy> enemyList = new LinkedList<>();
@@ -68,55 +69,11 @@ public class Handler {
         this.enemyList.remove(enemy);
     }
 
-    public Player getPlayer() {
-        return player;
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
-
-    public Point getPoint() {
-        return point;
-    }
-
-    public void setPoint(Point point) {
-        this.point = point;
-    }
-
-    public List<Enemy> getEnemyList() {
-        return enemyList;
-    }
-
-    public void setEnemyList(List<Enemy> enemyList) {
-        this.enemyList = (LinkedList<Enemy>) enemyList;
-    }
-
     public void addPowerUp(PowerUp powerUp) {
         this.powerUpList.add(powerUp);
     }
 
-    public List<PowerUp> getPowerUpList() {
-        return powerUpList;
-    }
-
-    public void setPowerUpList(List<PowerUp> powerUpList) {
-        this.powerUpList = (LinkedList<PowerUp>) powerUpList;
-    }
-
-    public TrackEnemy getTrackEnemy() {
-        return trackEnemy;
-    }
-
-    public void setTrackEnemy(TrackEnemy trackEnemy) {
-        this.trackEnemy = trackEnemy;
-    }
-
-    public TeleportEnemy getTeleportEnemy() {
-        return teleportEnemy;
-    }
-
-    public void setTeleportEnemy(TeleportEnemy teleportEnemy) {
-        this.teleportEnemy = teleportEnemy;
+    public void removePowerUp(PowerUp powerUp) {
+        this.powerUpList.remove(powerUp);
     }
 }

@@ -1,16 +1,14 @@
 package game;
 
-import controlls.KeyInput;
-import controlls.MouseInput;
 import entities.Handler;
 import game.music.Music;
+import game.window.GameOver;
 import game.window.Highscores;
 import game.window.Hud;
 import game.window.Menu;
 import game.window.Settings;
 import game.window.Window;
 import services.HighscoreService;
-import services.Spawner;
 
 public class GameLoop {
 
@@ -20,29 +18,25 @@ public class GameLoop {
 
     private HighscoreService highscoreService = new HighscoreService();
 
+    private GameOver gameOver;
     private Handler handler;
     private Highscores highscores;
     private Hud hud;
     private Menu menu;
     private Music music;
     private Settings settings;
-    private Spawner spawner;
 
     public GameLoop() {
+        this.gameOver = new GameOver();
         this.handler = new Handler();
         this.highscores = new Highscores();
         this.hud = new Hud();
         this.menu = new Menu();
         this.music = new Music();
         this.settings = new Settings();
-        this.spawner = new Spawner();
     }
 
     public void loop(Window window) {
-
-        window.getFrame().requestFocus();
-        window.getFrame().addKeyListener(new KeyInput(handler));
-        window.getFrame().addMouseListener(new MouseInput());
 
         long lastTime = System.nanoTime();
         double amountOfTicks = 60.0;
@@ -50,16 +44,14 @@ public class GameLoop {
         double delta = 0;
         long timer = System.currentTimeMillis();
 
-        initializeSpawns(handler);
-
         while (GameVariables.isRunning()) {
             long now = System.nanoTime();
             delta += (now - lastTime) / ns;
             lastTime = now;
 
             while (delta >= 1) {
-                tick(handler);
                 render(window, handler);
+                tick(handler);
                 delta--;
             }
 
@@ -84,6 +76,8 @@ public class GameLoop {
             case HIGHSCORES:
                 highscores.render(window, handler);
                 break;
+            case GAMEOVER:
+                gameOver.render(window, handler);
             default:
                 break;
         }
@@ -137,11 +131,7 @@ public class GameLoop {
             GameVariables.setHealth(100);
             GameVariables.setState(GameState.GAMEOVER);
             GameVariables.setMusicRunning(false);
+            GameVariables.setWindowCleared(false);
         }
-    }
-
-    private void initializeSpawns(Handler handler) {
-        spawner.spawnPlayer(handler);
-        spawner.spawnPoint(handler);
     }
 }

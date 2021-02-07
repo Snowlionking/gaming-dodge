@@ -1,6 +1,7 @@
 package game.window;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import controlls.KeyInput;
@@ -10,7 +11,7 @@ import game.GameState;
 import game.GameVariables;
 import services.listeners.MenuButtonListener;
 
-public class Menu {
+public class GameOver {
 
     public void render(Window window, Handler handler) {
         if (!GameVariables.isWindowCleared()) {
@@ -23,21 +24,16 @@ public class Menu {
 
             JPanel panel = new JPanel();
 
-            JButton playButton = new JButton("PLAY");
-            playButton.addActionListener(new MenuButtonListener(GameState.PLAYING));
-            panel.add(playButton);
+            JButton menuButton = new JButton("MENU");
+            menuButton.addActionListener(new MenuButtonListener(GameState.MENU));
 
-            JButton settingsButton = new JButton("SETTINGS");
-            settingsButton.addActionListener(new MenuButtonListener(GameState.SETTINGS));
-            panel.add(settingsButton);
+            JLabel dieLabel = new JLabel("YOU DIED!");
+            JLabel scoreLabel = new JLabel(Integer.toString(GameVariables.getScore()));
+            GameVariables.setScore(0);
 
-            JButton higscoreButton = new JButton("HIGSCORES");
-            higscoreButton.addActionListener(new MenuButtonListener(GameState.HIGHSCORES));
-            panel.add(higscoreButton);
-
-            JButton exitButton = new JButton("EXIT");
-            exitButton.addActionListener(exit -> System.exit(1));
-            panel.add(exitButton);
+            panel.add(menuButton);
+            panel.add(dieLabel);
+            panel.add(scoreLabel);
 
             window.getFrame().add(panel);
             window.getFrame().revalidate();

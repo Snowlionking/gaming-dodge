@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -35,6 +36,14 @@ public class HighscoreService {
             logger.severe("Error: " + e.getMessage());
         }
         return highscores;
+    }
+
+    public List<Integer> loadSortedHighscores() {
+        List<Integer> highscores = loadHighscores();
+        Collections.sort(highscores);
+        Collections.reverse(highscores);
+        return highscores.subList(0, Math.min(highscores.size(), 19));
+
     }
 
 }
