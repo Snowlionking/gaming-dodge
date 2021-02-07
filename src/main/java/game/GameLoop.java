@@ -1,16 +1,14 @@
 package game;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.image.BufferStrategy;
-
-import controlls.KeyInput;
-import controlls.MouseInput;
 import entities.Handler;
-import game.hud.Hud;
 import game.music.Music;
+import game.window.GameOver;
+import game.window.Highscores;
+import game.window.Hud;
+import game.window.Menu;
+import game.window.Settings;
+import game.window.Window;
 import services.HighscoreService;
-import services.Spawner;
 
 public class GameLoop {
 
@@ -20,23 +18,25 @@ public class GameLoop {
 
     private HighscoreService highscoreService = new HighscoreService();
 
+    private GameOver gameOver;
     private Handler handler;
+    private Highscores highscores;
     private Hud hud;
+    private Menu menu;
     private Music music;
-    private Spawner spawner;
+    private Settings settings;
 
     public GameLoop() {
+        this.gameOver = new GameOver();
         this.handler = new Handler();
+        this.highscores = new Highscores();
         this.hud = new Hud();
+        this.menu = new Menu();
         this.music = new Music();
-        this.spawner = new Spawner();
+        this.settings = new Settings();
     }
 
-    public void loop(Game game) {
-
-        game.requestFocus();
-        game.addKeyListener(new KeyInput(handler));
-        game.addMouseListener(new MouseInput());
+    public void loop(Window window) {
 
         long lastTime = System.nanoTime();
         double amountOfTicks = 60.0;
@@ -44,16 +44,14 @@ public class GameLoop {
         double delta = 0;
         long timer = System.currentTimeMillis();
 
-        initializeSpawns(handler);
-
         while (GameVariables.isRunning()) {
             long now = System.nanoTime();
             delta += (now - lastTime) / ns;
             lastTime = now;
 
             while (delta >= 1) {
+                render(window, handler);
                 tick(handler);
-                render(game, handler);
                 delta--;
             }
 
@@ -61,29 +59,28 @@ public class GameLoop {
                 timer += 1000;
             }
         }
-        game.stop();
     }
 
-    private void render(Game game, Handler handler) {
-        BufferStrategy bs = game.getBufferStrategy();
-        if (bs == null) {
-            game.createBufferStrategy(3);
-            return;
+    private void render(Window window, Handler handler) {
+
+        switch (GameVariables.getState()) {
+            case MENU:
+                menu.render(window, handler);
+                break;
+            case PLAYING:
+                hud.render(window, handler);
+                break;
+            case SETTINGS:
+                settings.render(window, handler);
+                break;
+            case HIGHSCORES:
+                highscores.render(window, handler);
+                break;
+            case GAMEOVER:
+                gameOver.render(window, handler);
+            default:
+                break;
         }
-
-        Graphics g = bs.getDrawGraphics();
-
-        g.setColor(Color.black);
-        g.fillRect(0, 0, GameVariables.getWIDTH(), GameVariables.getHEIGHT());
-
-        if (GameVariables.getState() == GameState.PLAYING) {
-            handler.render(g);
-        }
-
-        hud.render(g);
-
-        g.dispose();
-        bs.show();
     }
 
     private void tick(Handler handler) {
@@ -134,11 +131,7 @@ public class GameLoop {
             GameVariables.setHealth(100);
             GameVariables.setState(GameState.GAMEOVER);
             GameVariables.setMusicRunning(false);
+            GameVariables.setWindowCleared(false);
         }
-    }
-
-    private void initializeSpawns(Handler handler) {
-        spawner.spawnPlayer(handler);
-        spawner.spawnPoint(handler);
     }
 }

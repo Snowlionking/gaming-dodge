@@ -16,10 +16,10 @@ public class GameVariables {
 
     @Getter
     @Setter
-    private static long soundVolume = 0;
+    private static long soundVolume = -40;
     @Getter
     @Setter
-    private static long musicVolume = 0;
+    private static long musicVolume = -40;
 
     @Getter
     @Setter
@@ -53,6 +53,9 @@ public class GameVariables {
     @Getter
     @Setter
     private static boolean musicRunning = false;
+    @Getter
+    @Setter
+    private static boolean windowCleared = false;
 
     @Getter
     @Setter
