@@ -78,6 +78,7 @@ public class GameLoop {
                 break;
             case GAMEOVER:
                 gameOver.render(window, handler);
+                break;
             default:
                 break;
         }

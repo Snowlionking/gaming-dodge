@@ -61,7 +61,7 @@ public class Player extends GameObject {
                 enemyIterator.remove();
             }
         }
-        if (handler.getEnemyList().size() == 0 && GameVariables.getScore() != 0) {
+        if (handler.getEnemyList().isEmpty() && GameVariables.getScore() != 0) {
             spawner.spawnBasicEnemy(handler);
         }
     }
