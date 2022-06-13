@@ -6,11 +6,14 @@ import java.awt.Rectangle;
 import java.util.Iterator;
 
 import entities.enemies.Enemy;
+import entities.powerups.PowerUp;
 import game.GameVariables;
 import game.music.Music;
+import lombok.extern.slf4j.Slf4j;
 import services.InboundService;
 import services.Spawner;
 
+@Slf4j
 public class Player extends GameObject {
 
     private static final int PLAYER_SIZE = 32;
@@ -21,8 +24,8 @@ public class Player extends GameObject {
     private Spawner spawner = new Spawner();
     private InboundService inboundService = new InboundService();
 
-    public Player(int x, int y, Id id, Handler handler) {
-        super(x, y, id);
+    public Player(int x, int y, Handler handler) {
+        super(x, y, Id.PLAYER);
         this.handler = handler;
     }
 
@@ -42,6 +45,45 @@ public class Player extends GameObject {
         checkForEnemyCollision();
 
         checkForPointCollision();
+
+        checkForPowerUpCollision();
+    }
+
+    private void checkForPowerUpCollision() {
+        Iterator<PowerUp> powerUpIterator = handler.getPowerUpList().iterator();
+
+        while (powerUpIterator.hasNext()) {
+            PowerUp powerUp = powerUpIterator.next();
+            if (doesPlayerCollideWithEntity(powerUp)) {
+                log.info(powerUp.getPowerUpId().name());
+                music.playSound("PowerUp.wav");
+                powerUpIterator.remove();
+                determinePowerUpAndExecuteIt(powerUp);
+            }
+        }
+        if (handler.getPowerUpList().isEmpty() && GameVariables.getScore() != 0) {
+            spawner.spawnPowerUp(handler);
+        }
+    }
+
+    private void determinePowerUpAndExecuteIt(PowerUp powerUp) {
+        switch (powerUp.getPowerUpId()) {
+            case INVINCIBLE: {
+                return;
+            }
+            case TIME_STOP: {
+                return;
+            }
+            case CLEAR_ALL_ENEMIES: {
+                handler.resetAllEntities();
+                return;
+            }
+            case HEALTH_BOOST: {
+                return;
+            }
+            default:
+                throw new IllegalArgumentException("Unexpected value: " + powerUp.getPowerUpId());
+        }
     }
 
     private void checkForEnemyCollision() {
@@ -89,6 +131,7 @@ public class Player extends GameObject {
             switch (GameVariables.getLevel()) {
                 case 1:
                     spawner.spawnBasicEnemy(handler);
+                    spawner.spawnPowerUp(handler);
                     break;
                 case 2:
                     spawner.spawnFastEnemy(handler);

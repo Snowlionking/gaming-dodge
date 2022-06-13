@@ -11,8 +11,8 @@ public class TrackEnemy extends Enemy {
 
     private Player player;
 
-    public TrackEnemy(int x, int y, Id id, Player player) {
-        super(x, y, id);
+    public TrackEnemy(int x, int y, Player player) {
+        super(x, y, Id.TRACK_ENEMY);
         this.player = player;
         damage = 50;
     }

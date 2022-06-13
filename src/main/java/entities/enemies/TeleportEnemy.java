@@ -18,8 +18,8 @@ public class TeleportEnemy extends Enemy {
     private long lastTime;
     private int deltaTime;
 
-    public TeleportEnemy(int x, int y, Id id) {
-        super(x, y, id);
+    public TeleportEnemy(int x, int y) {
+        super(x, y, Id.TELEPORT_ENEMY);
         damage = randomizer.randomNumber(42) + 1;
         lastTime = System.currentTimeMillis();
     }

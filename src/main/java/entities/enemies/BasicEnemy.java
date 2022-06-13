@@ -14,8 +14,8 @@ public class BasicEnemy extends Enemy {
     private InboundService inboundService = new InboundService();
     private static final int SPEED = 3;
 
-    public BasicEnemy(int x, int y, Id id) {
-        super(x, y, id);
+    public BasicEnemy(int x, int y) {
+        super(x, y, Id.BASIC_ENEMY);
         damage = 10;
 
         velX = randomizer.randomStartDirection(SPEED);

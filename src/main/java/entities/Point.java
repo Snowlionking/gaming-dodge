@@ -9,8 +9,8 @@ public class Point extends GameObject {
     private int points;
     private int regeneration;
 
-    public Point(int x, int y, Id id) {
-        super(x, y, id);
+    public Point(int x, int y) {
+        super(x, y, Id.POINT);
         setPoints(10);
         setRegeneration(2);
     }
