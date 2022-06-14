@@ -11,6 +11,7 @@ import game.GameVariables;
 import game.music.Music;
 import lombok.extern.slf4j.Slf4j;
 import services.InboundService;
+import services.Randomizer;
 import services.Spawner;
 
 @Slf4j
@@ -18,11 +19,16 @@ public class Player extends GameObject {
 
     private static final int PLAYER_SIZE = 32;
 
+    private long now;
+    private long lastTime;
+    private int deltaTime;
+
     private Handler handler;
 
     private Music music = new Music();
     private Spawner spawner = new Spawner();
     private InboundService inboundService = new InboundService();
+    private Randomizer randomizer = new Randomizer();
 
     public Player(int x, int y, Handler handler) {
         super(x, y, Id.PLAYER);
@@ -41,8 +47,15 @@ public class Player extends GameObject {
     }
 
     private void collisionCheck() {
-
-        checkForEnemyCollision();
+        if (!GameVariables.isInvincible()) {
+            checkForEnemyCollision();
+        } else {
+            now = System.currentTimeMillis();
+            deltaTime = (int) ((now - lastTime) / 1000);
+            if (deltaTime >= 5) {
+                GameVariables.setInvincible(false);
+            }
+        }
 
         checkForPointCollision();
 
@@ -61,14 +74,13 @@ public class Player extends GameObject {
                 determinePowerUpAndExecuteIt(powerUp);
             }
         }
-        if (handler.getPowerUpList().isEmpty() && GameVariables.getScore() != 0) {
-            spawner.spawnPowerUp(handler);
-        }
     }
 
     private void determinePowerUpAndExecuteIt(PowerUp powerUp) {
         switch (powerUp.getPowerUpId()) {
             case INVINCIBLE: {
+                GameVariables.setInvincible(true);
+                lastTime = System.currentTimeMillis();
                 return;
             }
             case TIME_STOP: {
@@ -79,6 +91,7 @@ public class Player extends GameObject {
                 return;
             }
             case HEALTH_BOOST: {
+                GameVariables.setHealth(GameVariables.getHealth() + 20);
                 return;
             }
             default:
@@ -103,23 +116,17 @@ public class Player extends GameObject {
                 enemyIterator.remove();
             }
         }
-        if (handler.getEnemyList().isEmpty() && GameVariables.getScore() != 0) {
-            spawner.spawnBasicEnemy(handler);
-        }
     }
 
     private void checkForTrackingAndTeleportEnemyCollision() {
-        if (GameVariables.getLevel() >= 3) {
-            if (doesPlayerCollideWithEntity(handler.getTrackEnemy())) {
-                GameVariables.setHealth(GameVariables.getHealth() - handler.getTrackEnemy().getDamage());
-                spawner.spawnTrackEnemy(handler, this);
-            }
+        if (doesPlayerCollideWithEntity(handler.getTrackEnemy())) {
+            GameVariables.setHealth(GameVariables.getHealth() - handler.getTrackEnemy().getDamage());
+            spawner.spawnTrackEnemy(handler, this);
+        }
 
-            if (GameVariables.getLevel() >= 4 && doesPlayerCollideWithEntity(handler.getTeleportEnemy())) {
-                GameVariables.setHealth(GameVariables.getHealth() - handler.getTeleportEnemy().getDamage());
-                spawner.spawnTeleportEnemy(handler);
-            }
-
+        if (doesPlayerCollideWithEntity(handler.getTeleportEnemy())) {
+            GameVariables.setHealth(GameVariables.getHealth() - handler.getTeleportEnemy().getDamage());
+            spawner.spawnTeleportEnemy(handler);
         }
     }
 
@@ -128,10 +135,12 @@ public class Player extends GameObject {
             music.playSound("pop.wav");
             GameVariables.setScore(GameVariables.getScore() + handler.getPoint().getPoints());
             GameVariables.setHealth(GameVariables.getHealth() + handler.getPoint().getRegeneration());
+            if (randomizer.randomNumber(10) == 1) {
+                spawner.spawnPowerUp(handler);
+            }
             switch (GameVariables.getLevel()) {
                 case 1:
                     spawner.spawnBasicEnemy(handler);
-                    spawner.spawnPowerUp(handler);
                     break;
                 case 2:
                     spawner.spawnFastEnemy(handler);
@@ -162,7 +171,11 @@ public class Player extends GameObject {
 
     @Override
     public void render(Graphics g) {
-        g.setColor(Color.yellow);
+        if (GameVariables.isInvincible()) {
+            g.setColor(Color.white);
+        } else {
+            g.setColor(Color.yellow);
+        }
         g.fillRect(x, y, PLAYER_SIZE, PLAYER_SIZE);
     }
 

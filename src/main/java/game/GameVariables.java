@@ -9,17 +9,25 @@ import lombok.Setter;
 
 public class GameVariables {
 
+    // WINDOW
     @Getter
     private static final int WIDTH = 1280;
     @Getter
     private static final int HEIGHT = WIDTH / 12 * 9;
 
+    // MUSIC
     @Getter
     @Setter
     private static long soundVolume = -40;
     @Getter
     @Setter
     private static long musicVolume = -40;
+    @Getter
+    @Setter
+    private static int volumeX = GameVariables.getWIDTH() / 2 + 495;
+    @Getter
+    @Setter
+    private static int soundX = GameVariables.getWIDTH() / 2 + 495;
 
     @Getter
     @Setter
@@ -36,10 +44,7 @@ public class GameVariables {
     private static int score = 0;
     @Getter
     @Setter
-    private static int volumeX = GameVariables.getWIDTH() / 2 + 495;
-    @Getter
-    @Setter
-    private static int soundX = GameVariables.getWIDTH() / 2 + 495;
+    private static boolean invincible = false;
 
     @Getter
     @Setter
@@ -56,6 +61,10 @@ public class GameVariables {
     @Getter
     @Setter
     private static boolean windowCleared = false;
+
+    @Getter
+    @Setter
+    private static int invincibleCounter = 0;
 
     @Getter
     @Setter
